@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+*{
+    
+    margin: 0 5px;
+    padding-top: 5px;
+    
+}
+body{
+    background-color: rgba(0, 0, 0, 0.76);
+}
+header{
+    background-color: rgba(2, 0, 37, 0.897);
+    color: white;
+}
+h1{
+    font-family: 'Poiret One', cursive;
+}
+button{
+    color :blue;
+}
