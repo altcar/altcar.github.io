@@ -5,7 +5,19 @@
     box-sizing: border-box;
     background-color: #fff;
     font-family: 'Montserrat', sans-serif;
-    
+    scroll-behavior: smooth;
+}
+@media (max-width: 639px) {
+    ul{
+        flex-direction: column;
+    }
+    .contact{
+        max-height: 50px;
+        margin: 0 -100px 0 0 !important; 
+    }
+    nav{
+    margin: 0 110px 0 0 !important;
+    }
 }
 body{
     width: 100%;
@@ -37,13 +49,13 @@ li{
 }
 ul{
     background-color: transparent;
-    
     display: flex;
 }
 nav{
     display: flex;
+    margin: 0 20px 0 0;
 }
-nav a{
+nav li a{
     margin: 0 10px;
     text-decoration: none;
     color: black;
@@ -54,18 +66,25 @@ li:hover{
     transition: 0.5s;
 }
 .contact{
-    padding: 5px 10px;
+    margin: 0 -10px 0 0px;
+    padding: 5px 10px 5px;
     text-decoration: none;
     border:0px solid;
     border-radius: 10px;
     background: rgb(11,0,194);
     color: white;
+    transition: 1s;
     background: linear-gradient(90deg, rgba(11,0,194,1) 0%, rgba(9,9,121,1) 28%, rgba(3,133,203,1) 73%, rgba(0,212,255,1) 100%);
+}
+.contact:hover{
+    background: rgb(252,87,69);
+background: linear-gradient(90deg, rgba(252,87,69,1) 0%, rgba(252,176,69,1) 76%);
 }
 header h1{
     text-align: center;
     background-color: transparent;
     color: white;
+    font-family: 'Poiret One', cursive;
 }
 .title{
     text-align: center;
@@ -91,9 +110,9 @@ header h1{
     filter: blur(3px);
     cursor: pointer;
 }
-.img img::after{
+/*.img img::after{
     content: 'enter';
-}
+}*/
 .youtube{
     display: block;
 }
@@ -104,3 +123,46 @@ header h1{
 #link{
     padding: 5%;
 }
+#contact{
+  position: fixed; /* Fixed/sticky position */
+  width: 93px;
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background: rgb(11,0,194);
+  color: white;
+  background: linear-gradient(45deg, rgba(11,0,194,1) 0%, rgba(9,9,121,1) 28%, rgba(3,133,203,1) 73%, rgba(0,212,255,1) 100%);
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+  font-weight: 600;
+}
+#contact:hover{
+    background: rgb(252,87,69);
+background: linear-gradient(235deg, rgba(252,87,69,1) 0%, rgba(252,176,69,1) 76%);
+}
+#top{
+    position: fixed; /* Fixed/sticky position */
+    width: 93px;
+    height: 50px;
+    bottom: 85px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background: rgb(11,0,194);
+    color: white;
+    background: linear-gradient(45deg, rgba(11,0,194,1) 0%, rgba(9,9,121,1) 28%, rgba(3,133,203,1) 73%, rgba(0,212,255,1) 100%);
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+    font-weight: 600;
+  }
+  #top:hover{
+      background: rgb(252,87,69);
+  background: linear-gradient(235deg, rgba(252,87,69,1) 0%, rgba(252,176,69,1) 76%);
+  }
