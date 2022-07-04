@@ -1,20 +1,106 @@
-@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Roboto:wght@300&display=swap');@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 *{
-    
-    margin: 0 5px;
-    padding-top: 5px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
     
 }
 body{
-    background-color: rgba(0, 0, 0, 0.76);
+    width: 100%;
+}
+header img{
+    margin:  0;
+    height: 30px;
+    width: 30px;
 }
 header{
-    background-color: rgba(2, 0, 37, 0.897);
+    background: rgba(0, 0, 0, 0.925) ;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    
+}
+ul, li{
+list-style: none;
+}
+li{
+    padding: 5px;
+    border:0px solid;
+    margin: 0 5px;
+    background: transparent;
+
+}
+ul{
+    background-color: transparent;
+    
+    display: flex;
+}
+nav{
+    display: flex;
+}
+nav a{
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+
+}
+li:hover{
+    transform: scale(1.2);
+    transition: 0.5s;
+}
+.contact{
+    padding: 5px 10px;
+    text-decoration: none;
+    border:0px solid;
+    border-radius: 10px;
+    background: rgb(11,0,194);
+    color: white;
+    background: linear-gradient(90deg, rgba(11,0,194,1) 0%, rgba(9,9,121,1) 28%, rgba(3,133,203,1) 73%, rgba(0,212,255,1) 100%);
+}
+header h1{
+    text-align: center;
+    background-color: transparent;
     color: white;
 }
-h1{
-    font-family: 'Poiret One', cursive;
+.title{
+    text-align: center;
+    padding: 10px;
 }
-button{
-    color :blue;
+.content{
+    margin: 0 10%;
+}
+.project-title {
+    font-weight: 100;
+    font-size: 20px;
+}
+.img{
+    width: 100%;
+    text-align: center;
+}
+.img img{
+    transition: 0.2s;
+    max-height: 700px;
+    max-width: 500px;
+}
+.img img:hover{
+    filter: blur(3px);
+    cursor: pointer;
+}
+.img img::after{
+    content: 'enter';
+}
+.youtube{
+    display: block;
+}
+@media (min-width: 1261px) {
+    .youtube{
+    display: flex;
+}}
+#link{
+    padding: 5%;
 }
