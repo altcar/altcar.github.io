@@ -7,6 +7,7 @@
     font-family: 'Montserrat', sans-serif;
     scroll-behavior: smooth;
 }
+@media (min-width:1600px){html {zoom: 125%;}}
 @media (max-width: 639px) {
     ul{
         flex-direction: column;
