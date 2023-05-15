@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
+}
+
+@media (min-width:1600px) {
+    html {
+        zoom: 125%;
+    }
+}
+
+@media (max-width: 639px) {
+    ul {
+        flex-direction: column;
+    }
+
+    .contact {
+        max-height: 50px;
+        margin: 0 -100px 0 0 !important;
+    }
+
+    nav {
+        margin: 0 110px 0 0 !important;
+    }
+}
+
+body {
+    width: 100%;
+}
+
+header img {
+    margin: 0;
+    height: 30px;
+    width: 30px;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.925);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+li {
+    padding: 5px;
+    border: 0px solid;
+    margin: 0 5px;
+    background: transparent;
+
+}
+
+ul {
+    background-color: transparent;
+    display: flex;
+}
+
+nav {
+    display: flex;
+    margin: 0 20px 0 0;
+}
+
+nav li a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+
+}
+
+li:hover {
+    transform: scale(1.2);
+    transition: 0.5s;
+}
+
+.contact {
+    margin: 0 -10px 0 0px;
+    padding: 5px 10px 5px;
+    text-decoration: none;
+    border: 0px solid;
+    border-radius: 10px;
+    background: rgb(11, 0, 194);
+    color: white;
+    transition: 1s;
+    background: linear-gradient(90deg, rgba(11, 0, 194, 1) 0%, rgba(9, 9, 121, 1) 28%, rgba(3, 133, 203, 1) 73%, rgba(0, 212, 255, 1) 100%);
+}
+
+.contact:hover {
+    background: rgb(252, 87, 69);
+    background: linear-gradient(90deg, rgba(252, 87, 69, 1) 0%, rgba(252, 176, 69, 1) 76%);
+}
+
+header h1 {
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    font-family: 'Poiret One', cursive;
+}
+
+.title {
+    text-align: center;
+    padding: 10px;
+}
+
+.content {
+    margin: 0 10%;
+}
+
+.project-title {
+    font-weight: 100;
+    font-size: 20px;
+}
+
+.img {
+    width: 100%;
+    text-align: center;
+}
+
+.img img {
+    transition: 0.2s;
+    max-height: 700px;
+    max-width: 500px;
+}
+
+.img img:hover {
+    filter: blur(3px);
+    cursor: pointer;
+}
+
+/*.img img::after{
+    content: 'enter';
+}*/
+.youtube {
+    display: block;
+}
+
+@media (min-width: 1261px) {
+    .youtube {
+        display: flex;
+    }
+}
+
+#link {
+    padding: 5%;
+}
+
+#contact {
+    position: fixed;
+    /* Fixed/sticky position */
+    width: 93px;
+    bottom: 20px;
+    /* Place the button at the bottom of the page */
+    right: 30px;
+    /* Place the button 30px from the right */
+    z-index: 99;
+    /* Make sure it does not overlap */
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background: rgb(11, 0, 194);
+    color: white;
+    background: linear-gradient(45deg, rgba(11, 0, 194, 1) 0%, rgba(9, 9, 121, 1) 28%, rgba(3, 133, 203, 1) 73%, rgba(0, 212, 255, 1) 100%);
+    cursor: pointer;
+    /* Add a mouse pointer on hover */
+    padding: 15px;
+    /* Some padding */
+    border-radius: 10px;
+    /* Rounded corners */
+    font-size: 18px;
+    /* Increase font size */
+    font-weight: 600;
+}
+
+#contact:hover {
+    background: rgb(252, 87, 69);
+    background: linear-gradient(235deg, rgba(252, 87, 69, 1) 0%, rgba(252, 176, 69, 1) 76%);
+}
+
+#top {
+    position: fixed;
+    /* Fixed/sticky position */
+    width: 93px;
+    height: 50px;
+    bottom: 85px;
+    /* Place the button at the bottom of the page */
+    right: 30px;
+    /* Place the button 30px from the right */
+    z-index: 99;
+    /* Make sure it does not overlap */
+    border: none;
+    /* Remove borders */
+    outline: none;
+    /* Remove outline */
+    background: rgb(11, 0, 194);
+    color: white;
+    background: linear-gradient(45deg, rgba(11, 0, 194, 1) 0%, rgba(9, 9, 121, 1) 28%, rgba(3, 133, 203, 1) 73%, rgba(0, 212, 255, 1) 100%);
+    cursor: pointer;
+    /* Add a mouse pointer on hover */
+    padding: 15px;
+    /* Some padding */
+    border-radius: 10px;
+    /* Rounded corners */
+    font-size: 18px;
+    /* Increase font size */
+    font-weight: 600;
+}
+
+#top:hover {
+    background: rgb(252, 87, 69);
+    background: linear-gradient(235deg, rgba(252, 87, 69, 1) 0%, rgba(252, 176, 69, 1) 76%);
+}
