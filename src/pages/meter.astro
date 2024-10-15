@@ -1,17 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import { Image } from "astro:assets";
+import NavBar from "../components/NavBar.astro";
 ---
 
 <Layout  title="METER">
     <div class="w-full relative cover-bg">
         <nav class="sticky top-0 text-end"> 
-            <ul>
-              <li class="inline px-2"><a href="/#about">About</a></li>
-              <li class="inline px-2"><a href="/#project">Project</a></li>
-              <li class="inline  px-2"><a href="/#project">Explore</a></li>
-              <li class="inline px-2"><a href="/#project">Contact</a></li>
-            </ul>
+          <NavBar></NavBar>
            </nav>
 
         
@@ -82,16 +78,16 @@ import { Image } from "astro:assets";
     <div class="h-full mt-32">
         <div class="w-full flex h-72">
             <div class="bg-red-900 w-full">
-                <a href="">
+                <a href="/">
                 <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>previous</div>
             </a>
             </div>    
             <div class="bg-blue-900 w-full">
-            <a href="">  
+            <a href="/meow">  
                 <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>next</div>
             </a>  
             </div>    
-        </div>  
+        </div>
       <div class="w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
       
         <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>

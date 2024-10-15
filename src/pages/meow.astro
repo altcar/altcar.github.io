@@ -2,18 +2,14 @@
 import Layout from "../layouts/Layout.astro"
 import { Image } from "astro:assets";
 import Card from "../components/PhotoCard.astro";
+import NavBar from "../components/NavBar.astro";
 ---
 
 <Layout title="my adventure">
 
     <div class="w-full relative cover-bg h-[70vh]">
         <nav class="sticky top-0 text-end"> 
-            <ul>
-              <li class="inline px-2"><a href="/#about">About</a></li>
-              <li class="inline px-2"><a href="/#project">Project</a></li>
-              <li class="inline  px-2"><a href="/#project">Explore</a></li>
-              <li class="inline px-2"><a href="/#project">Contact</a></li>
-            </ul>
+         <NavBar></NavBar>
         </nav>
         <div class="flex flex-end h-full">
         <div class="layout-content mt-12 flex items-center mb-32 justify-end flex-col text-center">
@@ -53,13 +49,38 @@ import Card from "../components/PhotoCard.astro";
     <hr>
     <div class="flex flex-col items-center">
         <div class="photos-container grid grid-cols-2 gap-3 w-fit">
-            <Card title="METER" body="new" href="/meter" picurl="/farm.png" date="2019-09-15 23:59"></Card>
-            <Card title="METER" body="new" href="/meter" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="METER" body="new" href="/meter" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="METER" body="new" href="/meter" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="METER" body="new" href="/meter" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
         </div>
     </div>
+    <div class="top h-[500px]">
+        <div class="h-full mt-32">
+            <div class="w-full flex h-72">
+                <div class="bg-red-900 w-full">
+                    <a href="/meter">
+                    <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>previous</div>
+                </a>
+                </div>    
+                <div class="bg-blue-900 w-full">
+                <a href="/">  
+                    <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>next</div>
+                </a>  
+                </div>    
+            </div>  
+          <div class="w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
+          
+            <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
+          </div>
+    
+      </div>
+        
+    </div> 
 </Layout>
 
 <style>

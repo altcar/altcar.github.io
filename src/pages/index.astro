@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 
 import "../styles/new.css";
 import Card from "../components/Card.astro";
+import NavBar from "../components/NavBar.astro";
 ---
 
 <Layout title="Welcome to shalev.eu.org">
@@ -10,12 +11,7 @@ import Card from "../components/Card.astro";
   <div class="top h-[100vh]">
     <div class="cover h-full">
          <nav class="sticky top-0 text-end"> 
-          <ul>
-            <li class="inline px-2"><a href="#about">About</a></li>
-            <li class="inline px-2"><a href="#project">Project</a></li>
-            <li class="inline  px-2"><a href="#project">Explore</a></li>
-            <li class="inline px-2"><a href="#project">Contact</a></li>
-          </ul>
+          <NavBar></NavBar>
          </nav>
          <div class="cover-content h-full flex justify-center flex-col ml-5">
            <h1 class="mastheadtitle"><pre class="block !text-xl ml-5">Hey. </pre>I'm Shalev <br/> Engineer Consultant</h1> 
@@ -49,18 +45,13 @@ import Card from "../components/Card.astro";
     <div class="cover h-full">
      
       <div class="cover-content h-full w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
-        <h5 class="pb-8">Let's connect</h5>
-        <h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Get in Touch</h2>
-        <h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Linkedin</h2>
+        <h5 class="pb-8" id="contact">Let's connect</h5>
+        <a href="mailto:connect@shalev.eu.org"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Get in Touch</h2></a>
+        <a href="https://www.linkedin.com/in/shalevl/"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Linkedin</h2></a>
         <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
       </div>
       <nav class="sticky bottom-0 text-end"> 
-        <ul>
-          <li class="inline px-2"><a href="#about">About</a></li>
-          <li class="inline px-2"><a href="#project">Project</a></li>
-          <li class="inline  px-2"><a href="#project">Explore</a></li>
-          <li class="inline px-2"><a href="#project">Contact</a></li>
-        </ul>
+        <NavBar></NavBar>
        </nav>
   </div>
     
