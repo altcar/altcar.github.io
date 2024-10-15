@@ -1,0 +1,49 @@
+.mastheadtitle {
+    line-height: 1.1;
+    font-size: 6rem ;
+    font-weight: 500;
+  }
+  @media (max-width: 991px) {
+.mastheadtitle {
+      font-size: 5.375rem;
+    }
+  }
+  @media (max-width: 767px) {
+  .mastheadtitle {
+      font-size: 4.375rem;
+    }
+  }
+  @media (max-width: 575px) {
+ .mastheadtitle {
+      font-size: 2.625rem;
+    }
+  }
+
+  .sectionHeading {
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: 0;
+    font-size: 2.5rem;
+  }
+  @media (max-width: 991px) {
+    .sectionHeading {
+      font-size: 2.375rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .sectionHeading {
+      font-size: 1.75rem;
+    }
+  }
+  /* .sectionHeading {
+    line-height: 1.1;
+    font-weight: 700;
+    font-size: 3.5rem;
+  } */
+  .top{
+    background: url(../svg/hero.png) no-repeat center center;
+  }
+  .cover{
+    background: rgba(0, 0, 0, 0.5);
+    
+  }

@@ -1,0 +1,12 @@
+---
+export interface Props {
+  icon: string;
+  url1?: string;
+}
+/* @vite-ignore */
+const { icon, url1 } = Astro.props as Props;
+const { default: innerHTML } = await import(`../svg/old/${icon}.svg?raw`); //  https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
+---
+<a href={url1} style="display: inline-block;">
+<Fragment set:html={innerHTML} />
+</a>

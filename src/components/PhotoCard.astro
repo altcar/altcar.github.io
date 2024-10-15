@@ -1,0 +1,39 @@
+---
+interface Props {
+	title: string;
+	body?: string;
+	href: string;
+	picurl: string;
+    date: string;
+}
+
+const { picurl, href, title, body, date} = Astro.props;
+---
+<div class="">
+    <div class="projectcard-bg m-3 bg-[var(--urlimg)]" style={` --urlimg: url('${picurl}');`}>
+	
+        <a class="projectcard hidden items-center justify-center h-full" href={href}>
+            {title}<br>
+            {body}
+        </a>
+    </div>
+    <pre class="mx-5">{date}</pre>
+</div>
+
+
+<style>
+	.projectcard-bg{
+		background: var(--urlimg) no-repeat center center;
+		/* background: blue; */
+		width: 200px;
+		height: 300px;
+	}
+	.projectcard{
+		
+	}
+	.projectcard-bg:hover .projectcard{
+		background: rgba(0, 0, 0, 0.5);
+		display:flex;
+		
+	}
+</style>

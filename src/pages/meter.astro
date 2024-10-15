@@ -1,0 +1,151 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { Image } from "astro:assets";
+---
+
+<Layout  title="METER">
+    <div class="w-full relative cover-bg">
+        <nav class="sticky top-0 text-end"> 
+            <ul>
+              <li class="inline px-2"><a href="/#about">About</a></li>
+              <li class="inline px-2"><a href="/#project">Project</a></li>
+              <li class="inline  px-2"><a href="/#project">Explore</a></li>
+              <li class="inline px-2"><a href="/#project">Contact</a></li>
+            </ul>
+           </nav>
+
+        
+        <div class="cover pt-0 w-full">
+<div class="mb-32 w-full">
+      <h1 class="w-full text-9xl text-center font-bold"> METER </h1>
+    <div class="ypadding my-[-16px]  mx-auto relative masthead__info__wrap">
+
+        <div class="px-[16px]">
+          <div class="masthead__info">
+            <div class="text-center">
+              <h5 class="text-lg leading-tight font-bold">My Role</h5>
+              <p class="text-xl leading-tight mt-1">UX Designer</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-[16px] relative ml-[8.33333333%]">
+            <div class="masthead__info">
+                <div class="text-center">
+                  <h5 class="text-lg leading-tight font-bold">Team</h5>
+                  <p class="text-xl leading-tight mt-1">Yara Digital Farming</p>
+                </div>
+              </div>
+        </div>
+
+        <div class="px-[16px]  relative ml-[8.33333333%]">
+            <div class="masthead__info">
+                <div class="text-center">
+                  <h5 class="text-lg leading-tight font-bold">Project Type</h5>
+                  <p class="text-xl leading-tight mt-1">Mobile App</p>
+                </div>
+              </div>
+        </div>
+
+        <div class="px-[16px]  relative ml-[8.33333333%]">
+            <div class="masthead__info">
+                <div class="text-center">
+                  <h5 class="text-lg leading-tight font-bold">Website</h5>
+                  <a href=""><p class="text-xl leading-tight mt-1 underline">Visit</p></a>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="layout-content py-48 text-center">
+    <h2 class=" text-2xl font-bold">We bring hope to disable people</h2>
+</div>
+<div class="layout-content flex items-center justify-center">
+    <div class="image-meter-wrapper w-[70%] my-auto">
+        <Image src="https://jamiephan.com/img/farmcare/fc-2.png" alt="A bird." width="2520" height="1080" />
+    </div>
+</div>
+<div class="layout-content py-48 flex items-center justify-center flex-col text-center">
+    <h2 class=" text-2xl font-semibold">Rewards</h2>
+    <p class="leading-normal text-lg my-12 w-[40%]">
+        Following the app’s recommendations may lead to good long-term results, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which farmers can complete specific activities to earn points and exchange them for coupons.
+    </p>
+</div>
+<div class="layout-content flex items-center justify-center">
+    <div class="image-meter-wrapper w-[70%] my-auto">
+        <Image src="https://jamiephan.com/img/farmcare/fc-2.png" alt="A bird." width="2520" height="1080" />
+    </div>
+</div>
+<div class="top h-[500px]">
+    <div class="h-full mt-32">
+        <div class="w-full flex h-72">
+            <div class="bg-red-900 w-full">
+                <a href="">
+                <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>previous</div>
+            </a>
+            </div>    
+            <div class="bg-blue-900 w-full">
+            <a href="">  
+                <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>next</div>
+            </a>  
+            </div>    
+        </div>  
+      <div class="w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
+      
+        <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
+      </div>
+
+  </div>
+    
+</div> 
+</Layout>
+<style>
+    .ypadding{
+        position: relative;
+        bottom: 0;
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: center;
+        align-items: center;
+    }
+    .ypadding > *{
+        display: inline-block;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .cover-bg{
+        background: url("../svg/farm.png") center center no-repeat;
+     
+    }
+    .cover{
+        
+        height: 100vh;
+        display: flex;
+        align-content: flex-end;
+        align-items: flex-end;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+
+.masthead__info__wrap {
+  margin-top: 13.75rem;
+}
+@media (max-width: 991px) {
+ .masthead__info__wrap {
+    margin-top: 8.75rem;
+  }
+}
+@media (max-width: 575px) {
+ .masthead__info__wrap {
+    margin-top: 4.5rem;
+  }
+}
+</style>

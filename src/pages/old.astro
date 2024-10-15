@@ -1,0 +1,164 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import "../styles/old.css";
+import Icon from '../components/Icon.astro';
+---
+
+<Layout title="My Old Personal Page">
+  <!-- <button id="contact">Contact</button> -->
+  <a href="#"><button id="top">top</button></a>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+  <dialog class="z-10">
+    <Icon icon="1" />
+    <Icon icon="2" />
+    <Icon icon="3" />
+    <Icon icon="4" />
+    <Icon icon="6" />
+    <Icon icon="7" />
+    <Icon icon="8" />
+    <Icon icon="9" />
+    <Icon icon="10" />
+    <Icon icon="11" />
+  </dialog>
+  <header>
+    <div class="left inline-flex">
+      <img src="/asset/ewtw.png" class="hue-rotate-60" alt="" />
+      <h1 id="head">Shalev Lau</h1>
+    </div>
+
+    <nav>
+      <ul class="links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#social">Social</a></li>
+        <li><a href="#project">Project</a></li>
+      </ul>
+      <div class="cv">
+        <a href="https://docs.google.com/document/d/11c3CWUpaBZIaUYwNuOrklpLIdVHq2MZn/edit?usp=sharing&ouid=103100896878843993450&rtpof=true&sd=true"
+          id="cv1">CV</a>
+        <a href="https://docs.google.com/document/d/1TC1KyfQJxq1iZcFKQfhNNag4RAZk3iVG/edit?usp=sharing&ouid=103100896878843993450&rtpof=true&sd=true"
+          id="cv2">CV</a>
+      </div>
+    </nav>
+  </header>
+  <h1 class="title" id="skill">Skills</h1> &emsp;&emsp;&emsp;&emsp;&emsp; 
+  <div class="outermarquee">
+    <div class="marquee">
+     Python | VB.NET | C# | C++ | Java | HTML |
+      CSS | JavaScript | MySQL | Node.JS | ExpressJS | jQuery | TensorFlow.py |
+      Network | Zero Trust | Git | Docker | OOP | Unity 3D Game | PXE | Windows
+      Server AD | Hypervisor | Premier Pro | Fusion 360 | SketchUp | IT Helpdesk |
+      PCB | Soldering | Full-Stack | English, Chinese – Both professional
+      proficiency
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="about">
+      <div class="selfinto">
+        <h1 class="title" id="about">Personal Statement</h1>
+        <p>
+          Experienced in software and networking, I am also passionate about
+          accepting various challenges by finishing DofE Gold and solving
+          problems by founding a student company. Besides, I was the president
+          of the STEM and coding club. Organising and leading some student-led
+          robot projects has boosted my confidence in teamwork as well as public
+          speaking. I also had numerous experiences volunteering inside and
+          outside the school across different age groups, from primary school to
+          the elderly. I am motivated and will keep enhancing myself to fit
+          better in my position and make a valid contribution.
+        </p>
+      </div>
+      <div class="social">
+        <h1 class="title" id="social">Social media</h1>
+        <div class="icon">
+          <Icon icon="21" url1="https://github.com/mushroomhater07"/>
+          <Icon icon="22" url1="https://www.linkedin.com/in/shalevl/"/>
+          <Icon icon="23" url1="https://stackoverflow.com/users/18937221/shalev"/>
+          <Icon icon="24" url1="https://www.youtube.com/@techey1787"/>
+          <Icon icon="25" url1="https://www.youtube.com/@gamydaily2264"/>
+          <Icon icon="26" url1="https://medium.com/@hheylau"/>
+          <Icon icon="27" />
+          <Icon icon="28" />
+          <Icon icon="29" />
+          <Icon icon="30" />
+      </div>
+    </div>
+  </div>
+  <div class="project">
+    <h1 class="title" id="project">Project</h1>
+    <div class="allbox" id="allbox">
+      <div class="youngenter"></div>
+    </div>
+    <div class="remotecae">
+      <h1 class="project-title">Coding Club - Remote control car</h1>
+      <div class="img">
+        <a href="https://github.com/vestapack/PiBorgRev-web-control"><img src="/asset/d.png" alt="" /></a>
+      </div>
+    </div>
+    <div class="science">
+      <h1 class="project-title">Science Club - traffic light system</h1>
+      <p>
+        A project back in 2017. I am the president of the science club at that
+        time and I joint Science Club and Computer Club to achieve an STEM
+        project. We use ardunio to control the duration and detect the signal
+        from other traffic lights to avoid collison.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<!-- <script>
+  $(document).ready(async () => {
+    await fetch("https://api.github.com/users/mushroomhater07/repos")
+      .then((req) => req.json())
+      .then(async (data) => {
+        for (let index = data.length - 1; index >= data.length - 10; index--) {
+          await $.getJSON(`${data[index].url}`, (res2) => {
+            $("#allbox").append(`
+              <a href="${res2.html_url}" class="box">
+
+                  <section>
+                      <div class="section_title">${res2.name}</div>
+                      <div class="about_section">
+                          <span class="block">${res2.description}</span>
+                      </div>
+                      <div class="bottom_section">
+                          <span class="inline-block"><i class="fas fa-code">${res2.language}</i>&nbsp; </span>
+                          <span><i class="fas fa-star"></i>&nbsp; ${res2.stargazers_count}&nbsp;</span>
+                          <span><i class="fas fa-code-branch"></i>&nbsp;${res2.forks_count}</span>
+                      </div>
+                  </section>
+              </div>
+          </a>
+
+  `);
+          });
+        }
+      });
+
+    const dialog = document.querySelector("dialog");
+    let timeout: number | undefined;
+
+    $("#head").mouseenter(() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        if (dialog) {
+          dialog.showModal();
+        }
+      }, 200);
+    });
+
+    $("#head").mouseleave(() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        if (dialog && dialog.open) {
+          dialog.close();
+        }
+      }, 6000);
+    });
+  });
+</script> -->
