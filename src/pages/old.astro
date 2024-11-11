@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
+//import { Image } from "astro:assets";
 import "../styles/old.css";
 import Icon from '../components/Icon.astro';
 ---
@@ -8,7 +8,7 @@ import Icon from '../components/Icon.astro';
 <Layout title="My Old Personal Page">
   <!-- <button id="contact">Contact</button> -->
   <a href="#"><button id="top">top</button></a>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+  <script is:inline src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />

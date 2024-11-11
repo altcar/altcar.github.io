@@ -1,7 +1,6 @@
 ---
-import Layout from "../layouts/Layout.astro";
-
 import "../styles/new.css";
+import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import NavBar from "../components/NavBar.astro";
 ---
@@ -16,16 +15,30 @@ import NavBar from "../components/NavBar.astro";
          <div class="cover-content h-full flex justify-center flex-col ml-5">
            <h1 class="mastheadtitle"><pre class="block !text-xl ml-5">Hey. </pre>I'm Shalev <br/> Engineer Consultant</h1> 
          <div class="mt-9 pb-36">
-          <button class="rounded-full py-3 px-6 border-solid border-2">Take a look</button>
-          <button class="rounded-full py-3 px-6 border-solid border-2">Get in Touch</button>
+          <a href="/#takealook">
+            <button class="rounded-full py-3 px-6 border-solid border-2">Take a look</button>
+          </a>
+          <a href="/#contact">
+            <button class="rounded-full py-3 px-6 border-solid border-2">Get in Touch</button>
+          </a>
+          
          </div>
          </div>
    
     </div>
   </div>
+  <div class="" id="takealook"></div>
   <div class="flex pt-56 pb-56 justify-center items-center bg-zinc-900 flex-col">
     <h5>What do I do?</h5>
     <h2 class="sectionHeading block">I play pubg</h2>
+    <div class="pt-8">
+      <a href="/meow">
+        <button class="rounded-full py-3 px-6 border-solid border-2">Peek my life</button>
+      </a>
+      <a href="/blog">
+        <button class="rounded-full py-3 px-6 border-solid border-2">My Blog</button>
+      </a>
+    </div>
   </div>
   <div class="flex pt-32 pb-56 justify-center items-center  flex-col">
     <h2 class="pb-12 text-3xl">A peek on what I worked on</h2>
