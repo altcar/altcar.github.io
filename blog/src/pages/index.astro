@@ -1,0 +1,71 @@
+---
+// src/pages/index.astro
+import { getData, getTotalCount, getAllTags, getDocumentsByTag, getTopTags, getDocumentById } from '../lib/firestoreService';
+import type { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+
+import Pagination from '../components/Pagination.astro';
+
+const pageSize = 10;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const postId = Astro.url.searchParams.get('postid');
+
+let lastVisible: QueryDocumentSnapshot<DocumentData> | undefined = undefined;
+
+if (currentPage > 1) {
+	const previousData = await getData(pageSize * (currentPage - 1));
+	lastVisible = previousData.lastDoc;
+}
+
+const { data, lastDoc } = await getData(pageSize, lastVisible);
+
+const totalPages = Math.ceil(await getTotalCount() / pageSize);
+
+const onPageChange = (page: number) => {
+	window.location.href = `/?page=${page}`;
+};
+
+const selectedTag = 'python'; // Replace with the tag you want to filter by
+const documentsByTag = await getDocumentsByTag(selectedTag);
+const toptags = await getTopTags();
+const tags = await getAllTags();
+
+let postContent = null;
+if (postId) {
+	postContent = await getDocumentById(postId);
+}
+---
+
+<ul>
+	{data.map(item => {
+		const prefix = '-' + ' '.repeat(item.parentCount);
+		return (
+			<a href={`/?page=${currentPage}&postid=${item.id}`}>
+			<li key={item.id} style={{ paddingLeft: `${item.parentCount * 20}px` }}>
+				{prefix} {item.title}
+			</li></a>
+		);
+	})}
+</ul>
+
+<ul>
+	{tags.map(item => (
+		<li key={item}>{item}</li> // Adjust according to your data structure
+	))}
+</ul>
+
+<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+
+<h2>Documents with Tag: {selectedTag}</h2>
+<ul>
+	{documentsByTag.map(item => (
+		<li key={item.id}>{item.title}</li> // Adjust according to your data structure
+	))}
+</ul>
+
+{postContent && (
+	<div>
+		<h2>Post Content</h2>
+		<p>{postContent.title}</p>
+		<p>{postContent.context}</p> 
+	</div>
+)}
