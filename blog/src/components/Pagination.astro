@@ -7,9 +7,9 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
 <nav>
   <ul>
-    {pages.map(page => (
+    {pages.map(page => (//onClick={() => onPageChange(page)}
       <li>
-        <a href={`/?page=${page}`} onClick={() => onPageChange(page)} class={page === currentPage ? 'active' : ''}>
+        <a href={`/?page=${page}`}  class={page === currentPage ? 'active' : ''}>
           {page}
         </a>
       </li>

@@ -97,7 +97,10 @@ export const getTopTags = async (topN: number = 3) => {
 export const getDocumentsByTag = async (tag: string) => {
   const q = query(collection(db, "blog"), where("tag", "array-contains", tag));
   const querySnapshot = await getDocs(q);
-  const data = querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({ id: doc.id, ...doc.data() }));
+  const data = querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+    const docData = doc.data();
+    return { id: doc.id, title: docData.title as string, ...docData };
+  });
   return data;
 };
 export const getDocumentById = async (id: string) => {
