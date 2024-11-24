@@ -1,0 +1,50 @@
+---
+// @ts-nocheck
+import { getCollection } from "astro:content";
+import FormattedDate from "./components/FormattedDate.astro";
+
+const posts = (await getCollection("blog")).sort(
+	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<body>
+		<main>
+			<section>
+				<ul class="post">
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/course/${post.slug}/`}>
+									<img
+										src={post.data.heroImage}
+										alt=""
+									/>
+									<h4 class="title">{post.data.title}</h4>
+									<p class="date">
+										<FormattedDate
+											date={post.data.pubDate ?? new Date()}
+										/>
+									</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+			<style>
+				#post li{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				
+				}
+				#post li a img{
+					max-width: 100vw;
+				}	
+			</style>
+		</main>
+	</body>
+</html>

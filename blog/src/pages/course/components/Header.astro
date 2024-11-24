@@ -1,0 +1,88 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from "./consts";
+// import { Image } from 'astro:assets';
+// var JSONcookie = undefined;
+---
+
+<header>
+	<nav>
+		<div style="    display: flex;		align-items: center;">
+			<!-- <Image src="/favicon.png" alt="" width="35" height="35" /> -->
+			<h2><a href="/">{SITE_TITLE}</a></h2>
+		</div>
+		<div class="internal-links">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/buy">Purchase</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	header {
+		margin: 0;
+		padding: 0 1em;
+		background: #fff;
+		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+	}
+	h2 {
+		margin: 0;
+		font-size: 1em;
+	}
+
+	h2 a,
+	h2 a.active {
+		text-decoration: none;
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	nav a {
+		padding: 1em 0.5em;
+		color: var(--black);
+		border-bottom: 4px solid transparent;
+		text-decoration: none;
+		
+	}
+	.internal-links a {
+		transition: 0.5s;
+	}
+	
+	.internal-links a:hover{
+		 background:rgba(0,0,0, 0.1); 
+		
+	}
+	nav a.active {
+		text-decoration: none;
+		border-bottom-color: var(--accent);
+	}
+	.social-links,
+	.social-links a {
+		display: flex;
+	}
+	@media (max-width: 720px) {
+		.social-links {
+			display: none;
+		}
+	}
+	.state {
+    display: flex;
+    flex-direction: row;
+	align-items: center;
+}
+.stateright {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.state img {
+	margin-right: 20px;
+	width: 40px !important;
+	height: 40px !important;
+}
+.state *{
+	padding: 0;
+}
+</style>
