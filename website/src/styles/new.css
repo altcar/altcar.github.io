@@ -1,3 +1,7 @@
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/navigation';
+
 .mastheadtitle {
     line-height: 1.1;
     font-size: 6rem ;
@@ -48,6 +52,6 @@
     background: url(../svg/hero.png) no-repeat center center;
   }
   .cover{
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
     
   }

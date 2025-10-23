@@ -1,0 +1,147 @@
+---
+// src/components/HeroGallery.astro
+
+import NavBar from "../components/NavBar.astro";
+import  getGalleryData  from '../lib/fetchHero.ts';
+import '../styles/HeroGallery.css'; // We'll add CSS next
+
+const experiences: Experience[] = await getGalleryData();
+
+interface Experience {
+  Position: string;
+  Company: string;
+  Type: string;
+  imageurl: string;
+  link: string;
+}
+
+
+const totalSlides = experiences.length;
+---
+
+<div class="slider-container" style="height: 90vh; width: 99vw; overflow: hidden; position: relative;" data-total-slides={totalSlides}>
+
+  <div class="slides-wrapper" id="slides-wrapper" style={`display: flex; height: 90vh; width: ${totalSlides * 100}vw; `}>
+    <!-- transition: transform 0.5s ease-in-out; -->
+        {experiences.map((exp) => (
+      <div class="slide" 
+           style={`height: 90vh; width: 100vw; background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url(${exp.imageurl}); background-size: cover; background-position: center; position: relative; display: flex; align-items: flex-end; justify-content: center; text-align: center; color: white; flex-shrink: 0;`}>
+       
+       
+        <div class="details px-[3rem]" style=" background: rgba(0,0,0,0.7); width: 100%; box-sizing: border-box;">
+          <div class="pb-[40px] mt-6 flex flex-row">
+<div class="text-left flex-grow"> 
+    <h2 class="x text-[10vw] sm:text-7xl font-[Open_Sans]" >Shalev Lau</h2>
+          <h1 class="  text-xl pl-2">Computer System Engineer</h1>
+           <h1 class="  text-sm pl-2 pb-2">Sheffield, United Kingdom</h1>
+            
+          <a href="/#takealook"><button class="rounded-full py-3 px-6 border-solid border-2">Take a look</button></a>
+          <a href="/#contactme"><button class="rounded-full py-3 px-6 border-solid border-2">Get in Touch</button></a>
+        </div>
+<div class="hidden md:block text-right">  
+    <h2 class="text-xl" >{exp.Position}</h2>
+          <h3 >{exp.Company}</h3>
+          <p >{exp.Type}</p>
+          <a href={`https://${exp.link}`} target="_blank" style="color: white; text-decoration: underline; font-size: 1rem;">Learn More</a>
+  </div>
+         
+      
+              </div></div>
+      </div>
+    ))}
+  </div>
+  
+  <!-- Navigation Arrows -->
+  <button class="nav-btn prev" id="prev-btn" style="position: absolute; top: 50%; left: 1rem; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 1rem; font-size: 2rem; cursor: pointer; z-index: 10;">‹</button>
+  <button class="nav-btn next" id="next-btn" style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 1rem; font-size: 2rem; cursor: pointer; z-index: 10;">›</button>
+  
+  <!-- Indicators -->
+  <div class="indicators" id="indicators" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
+    {Array.from({ length: totalSlides }, (_, i) => (
+      <button class={`indicator ${i === 0 ? 'active' : ''}`} 
+              data-slide={i} 
+              style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; transition: background 0.3s;"></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.slider-container');
+    const totalSlides = parseInt(container.dataset.totalSlides);
+    let currentSlide = 0;
+    const slidesWrapper = document.getElementById('slides-wrapper');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const indicators = document.querySelectorAll('.indicator');
+
+    if (!slidesWrapper || !prevBtn || !nextBtn || indicators.length === 0) {
+      console.error('Slider elements not found');
+      return;
+    }
+
+    function updateSlide() {
+      slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateSlide();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateSlide();
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Auto-slide every 5 seconds
+    let intervalId = setInterval(nextSlide, 5000);
+
+    // Pause on hover
+    container.addEventListener('mouseenter', () => clearInterval(intervalId));
+    container.addEventListener('mouseleave', () => {
+      intervalId = setInterval(nextSlide, 5000);
+    });
+
+    // Indicator hover effects
+    indicators.forEach(indicator => {
+      indicator.addEventListener('mouseover', (e) => {
+        e.target.style.background = 'white';
+      });
+      indicator.addEventListener('mouseout', (e) => {
+        e.target.style.background = currentSlide === parseInt(e.target.dataset.slide) ? 'white' : 'rgba(255,255,255,0.5)';
+      });
+    });
+
+    console.log('Slider initialized with', totalSlides, 'slides');
+  });
+</script>
+
+<style>
+  .slider-container {
+    font-family: Arial, sans-serif;
+  }
+  
+  .nav-btn:hover {
+    background: rgba(0,0,0,0.8);
+  }
+  
+  .indicator.active {
+    background: white !important;
+  }
+</style>

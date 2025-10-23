@@ -1,14 +1,32 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import HeroGallery from "../components/HeroGallery.astro";
 
 import "../styles/new.css";
 import Card from "../components/Card.astro";
 import NavBar from "../components/NavBar.astro";
+
+
+
+import WordCloud from "../components/WordCloud.astro";
+const heatmapJson = {
+  Embedded: 9,
+  "System Control ": 15,
+  "business \n analysis": 5,
+  "matlab": 12,
+  data: 7,
+  java: 3,
+  python: 10,
+  // Add more as your list grows...
+};
 ---
 
 <Layout title="Welcome">
-  
-  <div class="top h-[100vh]">
+         <nav class="sticky text-end" style="z-index: 1000;" id="about123"> 
+          <NavBar></NavBar>
+         </nav>
+   <HeroGallery /> <!-- client:load for hydration -->
+  <!-- <div class="top h-[100vh]">
     <div class="cover h-full">
          <nav class="sticky top-0 text-end"> 
           <NavBar></NavBar>
@@ -22,26 +40,36 @@ import NavBar from "../components/NavBar.astro";
          </div>
    
     </div>
-  </div>
+  </div> -->
   <div class="" id="takealook"></div>
-  <div class="flex pt-56 pb-56 justify-center items-center bg-zinc-900 flex-col">
-    <h5>What do I do?</h5>
-    <h2 class="sectionHeading block">I play pubg</h2>
+  <div class="flex py-24 justify-center items-center bg-slate-200 flex-col">
+    <h5 class="text-black"><div class="text-xl inline">What</div>    &emsp; do I do?</h5>
+    <h2 class="sectionHeading block">  <WordCloud data={heatmapJson} /></h2>
   </div>
   <div id="thisisindexproject"></div>
   <div class="">
     <nav class="sticky top-0 text-end"> 
       <NavBar></NavBar>
-     </nav><div class="flex pt-32 pb-56 justify-center items-center  flex-col">
+     </nav>
+     <div class="flex flex-col lg:hidden align-middle justify-center items-center  ">
+      <h2 class=" py-12 text-3xl">A peek on what I worked on</h2>
+       <Card title="Emerge Start-up" body="Support entrepreneurs in building their MVPs" href="/" picurl="/emer.jpeg"></Card> </td>
+         <Card title="Charity Event" body="Raised over $300 for local charities" href="/" picurl="/RAG.jpg"></Card>  </td>
+       
+            <Card title="VapeDrop" body="change the afterlives of disposable vapes" href="/" picurl="/vapedrop.jpg"></Card>  </td>
+           <Card title="Satellite Comp." body="Achieveing Best Innovation Award nationally" href="/" picurl="/ukseds.jpeg"></Card>  </td>
+       
+     </div>
+     <div class="hidden lg:flex pt-32 pb-56 justify-center items-center  flex-col">
       <h2 class="pb-12 text-3xl">A peek on what I worked on</h2>
       <table>
-        <tr>
-          <td> <Card title="METER" body="new" href="/meter" picurl="/farm.png"></Card> </td>
-          <td>  <Card title="METER" body="new" href="/meter" picurl="/farm.png"></Card>  </td>
+        <tr> <td><Card title="Emerge Start-up" body="Support entrepreneurs in building their MVPs" href="/" picurl="/emer.jpeg"></Card> </td>
+         <td><Card title="Charity Event" body="Raised over $300 for local charities" href="/" picurl="/RAG.jpg"></Card>  </td>
+       
         </tr>
         <tr>
-          <td>  <Card title="METER" body="new" href="/meter" picurl="/farm.png"></Card>  </td>
-          <td>  <Card title="METER" body="new" href="/meter" picurl="/farm.png"></Card>  </td>
+ <td> <Card title="VapeDrop" body="change the afterlives of disposable vapes" href="/" picurl="/vapedrop.jpg"></Card>  </td>
+        <td>   <Card title="Satellite Comp." body="Achieveing Best Innovation Award nationally" href="/" picurl="/ukseds.jpeg"></Card>  </td>
         </tr>
       </table>
     </div>
@@ -54,7 +82,7 @@ import NavBar from "../components/NavBar.astro";
      
       <div class="cover-content h-full w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
         <h5 class="pb-8" id="contact">Let's connect</h5>
-        <a href="mailto:connect@shalev.eu.org"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Get in Touch</h2></a>
+        <a href="/pic/contacts.vcf"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Save as contact(.vCard)</h2></a>
         <a href="https://www.linkedin.com/in/shalevl/"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Linkedin</h2></a>
         <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
       </div>

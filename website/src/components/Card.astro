@@ -11,7 +11,7 @@ const { picurl, href, title, body } = Astro.props;
 
 <div class="projectcard-bg m-3 bg-[var(--urlimg)]" style={` --urlimg: url('${picurl}');`}>
 	
-	<a class="projectcard hidden items-center justify-center h-full" href={href} transition:name="hero" >
+	<a class="projectcard flex lg:hidden items-center justify-center h-full" href={href} transition:name="hero" >
 		{title}<br>
 		{body}
 	</a>
@@ -26,7 +26,12 @@ const { picurl, href, title, body } = Astro.props;
 	.projectcard{
 		
 	}
-	.projectcard-bg:hover .projectcard{
+	
+	@media (max-width: 1024px) {.projectcard{
+		background: rgba(0, 0, 0, 0.5);
+	}
+	}
+			.projectcard-bg:hover .projectcard{
 		background: rgba(0, 0, 0, 0.5);
 		display:flex;
 		

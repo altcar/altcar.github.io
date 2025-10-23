@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Shalev Lau
+N:Lau;Shalev;;;
+item1.EMAIL;TYPE=INTERNET:connecti@shalev.eu.org
+item1.X-ABLabel:Email
+item2.TEL:+44 7832 696972
+item2.X-ABLabel:WhatsApp
+item3.URL:https\://shalev.eu.org
+item3.X-ABLabel:
+PHOTO:https://lh3.googleusercontent.com/contacts/AG6tpzG-_QzBWvx8sdXK8CnNAn
+ 4BPYkfG2vY3UY373KkPRcBYgbmKmjb
+CATEGORIES:myContacts
+END:VCARD

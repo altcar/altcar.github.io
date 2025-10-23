@@ -1,0 +1,135 @@
+---
+// src/components/WordCloud.astro
+// Updated: Positions the most frequent word in the center; others radially around it using client-side JS.
+// Requires a fixed-size container for absolute positioning. Adjust size as needed.
+
+const { data } = Astro.props;
+
+if (!data || typeof data !== 'object') {
+  throw new Error('data prop must be an object with word:weight pairs');
+}
+
+const values = Object.values(data);
+const minWeight = Math.min(...values);
+const maxWeight = Math.max(...values);
+const weightRange = maxWeight - minWeight || 1;
+
+const sizeClasses = [
+  'text-sm',
+  'text-base',
+  'text-lg',
+  'text-xl',
+  'text-2xl',
+  'text-4xl',
+  'text-7xl'
+];
+
+const getSizeClass = (weight: number) => {
+  const normalized = (weight - minWeight) / weightRange;
+  const index = Math.floor(normalized * (sizeClasses.length - 1));
+  return sizeClasses[index] || sizeClasses[0];
+};
+
+const weightClasses = [
+  'font-normal',
+  'font-normal',
+  'font-medium',
+  'font-semibold',
+  'font-bold',
+  'font-extrabold',
+  'font-black'
+];
+
+const getWeightClass = (weight: number) => {
+  const normalized = (weight - minWeight) / weightRange;
+  const index = Math.floor(normalized * (weightClasses.length - 1));
+  return weightClasses[index] || weightClasses[0];
+};
+
+// Pre-compute for JS: entries with classes
+const entries = Object.entries(data).map(([word, weight]) => ({
+  word,
+  weight: Number(weight),
+  sizeClass: getSizeClass(Number(weight)),
+  weightClass: getWeightClass(Number(weight))
+}));
+---
+
+<div 
+  id="word-cloud-container" 
+  class="relative w-[90vw] h-96 mx-auto overflow-hidden "
+  data-entries={JSON.stringify(entries)}
+>
+  <!-- Words will be positioned via JS -->
+</div>
+
+<script>
+  // Client-side positioning for radial word cloud
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('word-cloud-container');
+    if (!container) return;
+
+    const entries = JSON.parse(container.dataset.entries || '[]');
+    if (entries.length === 0) return;
+
+    // Clear any existing children (if re-rendered)
+    container.innerHTML = '';
+
+    // Sort by weight descending
+    entries.sort((a, b) => b.weight - a.weight);
+
+    // Find max weight index (first after sort)
+    const maxIndex = 0;
+    const maxWord = entries[maxIndex];
+
+    // Create center word
+    const centerSpan = document.createElement('span');
+    centerSpan.className = `text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-default transition-transform hover:scale-105 text-purple-600 font-bold text-4xl z-10`; 
+    //  ${maxWord.sizeClass} ${maxWord.weightClass}
+    centerSpan.textContent = maxWord.word;
+    centerSpan.title = `Weight: ${maxWord.weight}`;
+    container.appendChild(centerSpan);
+
+    // Position other words radially
+    const numOthers = entries.length - 1;
+    if (numOthers === 0) return;
+
+    const containerSize = 384; // w-96 is 384px (96*4)
+    const centerX = window.innerWidth *0.9 / 2;
+    const centerY = containerSize / 2;
+
+    // Distances: closer for larger words (normalized 0-1, map to 60-180px radius)
+    const minRadius = 150;
+    const maxRadius = 180;
+    const others = entries.slice(1); // Exclude center
+
+    others.forEach((entry, i) => {
+      const normalizedWeight = (entry.weight - Math.min(...entries.map(e => e.weight))) / (Math.max(...entries.map(e => e.weight)) - Math.min(...entries.map(e => e.weight)) || 1);
+      const radius = minRadius + normalizedWeight * (maxRadius - minRadius);
+      
+      // Distribute angles evenly (or add randomness: + (Math.random() - 0.5) * 30 for variety)
+      const angle = (i / numOthers) * 360 * (Math.PI / 180); // Radians
+      
+      const x = centerX + Math.cos(angle) * radius - 20; // Offset for word width approx
+      const y = centerY + Math.sin(angle) * radius - 10; // Offset for height approx
+
+      const span = document.createElement('span');
+      span.className = `absolute cursor-default transition-transform hover:scale-105 ${entry.sizeClass} ${entry.weightClass} text-gray-700 z-0 ${i % 2 ? 'text-blue-600' : 'text-purple-600'}`; // Alternate colors for visual pop
+      span.textContent = entry.word;
+      span.title = `Weight: ${entry.weight}`;
+      span.style.left = `${x}px`;
+      span.style.top = `${y}px`;
+      
+      // Optional: Rotate for cloud feel (comment out if unwanted)
+      // span.style.transform += ` rotate(${angle * (180 / Math.PI)}deg)`;
+      
+      container.appendChild(span);
+    });
+  });
+</script>
+
+<style>
+  #word-cloud-container {
+    position: relative;
+  }
+</style>
