@@ -1,0 +1,63 @@
+---
+// Import the CSV parser
+import Papa from 'papaparse';
+
+// Async getStaticPaths to fetch and paginate
+export async function getStaticPaths({ paginate }) {
+  // Replace with your CDN URL (e.g., Google Sheet publish link)
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQQ-ELkfhDKgQcw7If4Rnn9CbeTanMvAl9SppYVo9W9uY_b5vp1wzFClaQQHD10VwkMg636wJq4f9F4/pub?gid=0&single=true&output=csv';
+  const response = await fetch(csvUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch CSV: ${response.statusText}`);
+  }
+  const csvText = await response.text();
+
+  // Parse CSV (assumes headers: Title,tag,content; handles commas in tags/content)
+  const parsed = Papa.parse(csvText, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: false,
+    // Delimiter: ',' (or ';' if your CSV uses semicolons—test with your file)
+    delimiter: ','
+  }).data;
+
+  // Filter valid rows
+  const validPosts = parsed.filter(row => row.Title && row.content);
+
+  // Map to clean objects (split tags into array for easier use)
+  const posts = validPosts.map(row => ({
+    title: row.Title,
+    tags: row.tag ? row.tag.split(',').map(t => t.trim()) : [],
+    content: row.content
+  }));
+
+  // Paginate with 1 post per page (adjust pageSize as needed)
+  return paginate(posts, { pageSize: 1 });
+}
+
+// Destructure paginated props
+const { page } = Astro.props;
+const currentPost = page.data[0]; // Since pageSize=1
+---
+
+<html lang="en">
+<head>
+  <title>{currentPost?.title || 'Blog'}</title>
+</head>
+<body>
+  <article>
+    <h1>{currentPost?.title}</h1>
+    <p><strong>Tags:</strong> {currentPost?.tags.join(', ')}</p>
+    <div set:html={currentPost?.content} /> <!-- Renders Markdown links safely -->
+  </article>
+
+  <!-- Pagination nav -->
+  <nav>
+    {page.url.first ? <a href={page.url.first}>First</a> : null}
+    {page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+    {page.url.next ? <a href={page.url.next}>Next</a> : null}
+    {page.url.last ? <a href={page.url.last}>Last</a> : null}
+    <span>Page {page.currentPage} of {page.lastPage} (Total: {page.totalItems})</span>
+  </nav>
+</body>
+</html>

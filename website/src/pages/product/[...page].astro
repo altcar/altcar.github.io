@@ -1,0 +1,139 @@
+---
+
+import { getAllPosts } from '../../lib/fetchpost.ts';
+// export async function getStaticPaths({ paginate }) {
+//   const posts = await getAllPosts();
+//   return paginate(posts, { pageSize: 1 }); // 1 post per page
+// }
+
+// const { page } = Astro.props;
+// const currentPost = page.data[0];
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getAllPosts();
+
+  if (posts.length === 0) {
+    return []; // No pages if no data
+  }
+  
+  // Manually generate paths/props to avoid paginate's undefined params bug
+  const paths = posts.map((post, index) => {
+    const currentPageNum = index + 1;
+    const hasPrev = currentPageNum > 1;
+    const hasNext = currentPageNum < posts.length;
+
+    return {
+      params: { 
+        page: String(currentPageNum)  // Ensures '1', '2', ..., '46'
+      },
+      props: { 
+        page: {
+          data: [post],  // Single post for this page
+          currentPage: currentPageNum,
+          lastPage: posts.length,
+          totalItems: posts.length,
+          start: index + 1,  // Optional: 1-based start index
+          end: index + 1,    // Optional: end index
+          size: 1,           // pageSize
+          url: {
+            current: `/product/${currentPageNum}`,
+            first: '/product/1',
+            prev: hasPrev ? `/product/${currentPageNum - 1}` : null,
+            next: hasNext ? `/product/${currentPageNum + 1}` : null,
+            last: `/product/${posts.length}`
+          }
+        }
+      }
+    };
+  });
+
+  // LOGGING: Verify fixed paths
+  // console.log('Generated paths:', paths.map(p => p.params));
+
+  return paths;
+}
+
+
+
+
+
+
+
+const { page } = Astro.props;
+const paramPage = Astro.params.page;
+
+if (!paramPage || isNaN(Number(paramPage)) || Number(paramPage) < 1 || Number(paramPage) > page.lastPage) {
+  // Redirect or 404—use Astro.redirect for 301, or throw new Error('Not found')
+  return Astro.redirect('/product'); // Or throw new Response('Not Found', { status: 404 });
+}
+
+const currentPost = page.data[0];
+
+
+
+
+
+// New: Helper to format content with line breaks and auto-links
+function formatContent(rawContent) {
+  if (!rawContent) return '';
+
+  // Simple URL regex (basic; add http:// if missing)
+  const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g;
+
+  // Split into paragraphs by double newlines
+  const paragraphs = rawContent.split('\n\n').map(para => {
+    // Within para, replace single \n with <br />, and auto-link URLs
+    let formattedPara = para
+      .replace(/\n/g, '<br />')  // Single newlines to breaks
+      .replace(urlRegex, '<a href="$1" target="_blank" rel="noopener" class="text-blue-500 hover:underline">$1</a>');  // Auto-link URLs
+
+    // Wrap in <p> if not empty
+    return formattedPara.trim() ? `<p>${formattedPara}</p>` : '';
+  });
+
+  // Join paragraphs
+  return paragraphs.join('\n');
+}
+
+const formattedContent = formatContent(currentPost?.content);
+---
+
+<!-- ... head/styles unchanged; add link styles if needed ... -->
+
+<body>
+  <article>
+    <header>
+      <h1 class="post-title text-4xl">{currentPost?.title}</h1>
+      <div class="post-meta">
+        {currentPost?.tags.length > 0 ? (
+          <p>
+            <strong>Tags:</strong>{' '}
+            {currentPost.tags.map((tag, index) => (
+              <Fragment key={tag.slug}>
+                <a href={`/product/tag/${tag.slug}`}>{tag.name}</a>
+                {index < currentPost.tags.length - 1 && ', '}
+              </Fragment>
+            ))}
+          </p>
+        ) : (
+          <p><strong>Tags:</strong> None</p>
+        )}
+      </div>
+    </header>
+<hr><br>
+    <div class="post-content" set:html={formattedContent} />  <!-- Now with breaks & links -->
+
+  </article>
+
+  <nav> <hr />
+    {page.url.first ? <a href={page.url.first}>First</a> : null}
+    {page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+    {page.url.next ? <a href={page.url.next}>Next</a> : null}
+    {page.url.last ? <a href={page.url.last}>Last</a> : null}
+    <br>
+    <span>Page {page.currentPage} of {page.lastPage}</span>
+   <br><br>
+    <a href="/product">Home</a>
+  </nav>
+</body>
+</html>
