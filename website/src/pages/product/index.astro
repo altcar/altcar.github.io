@@ -1,19 +1,20 @@
 ---
 // src/pages/blog/index.astro
+import type { number } from 'astro:schema';
 import { getAllPosts, getTagFrequencies } from '../../lib/fetchpost.ts';
 
 const posts = await getAllPosts();
 const tagFreq = getTagFrequencies(posts);
 
 // Helper to truncate content
-function truncateContent(content, maxLength = 150) {
+function truncateContent(content: string, maxLength = 150) {
   if (content.length <= maxLength) return content;
   return content.slice(0, maxLength).trim() + '...';
 }
 
 // Unique tags for cloud (sorted by freq desc)
-const uniqueTags = Object.entries(tagFreq)
-  .map(([slug, count]) => ({ slug, name: posts.find(p => p.tags.some(t => t.slug === slug))?.tags.find(t => t.slug === slug)?.name || slug, count }))
+const uniqueTags: { slug: string; name: string; count: number }[] = (Object.entries(tagFreq) as [string, number][])
+  .map(([slug, count]) => ({ slug, name: posts.find((p: { tags: any[]; }) => p.tags.some((t: { slug: string; }) => t.slug === slug))?.tags.find((t: { slug: string; }) => t.slug === slug)?.name || slug, count }))
   .sort((a, b) => b.count - a.count);
 ---
 
@@ -167,7 +168,7 @@ const uniqueTags = Object.entries(tagFreq)
         ) : (
           <ul>
             {uniqueTags.map(tag => (
-              <li key={tag.slug}>
+              <li data-slug={tag.slug}>
                 <a 
                   href={`/product/tag/${tag.slug}`}
                   style={`font-size: ${Math.max(0.8, 1 + (tag.count * 0.2))}rem;`}
@@ -185,18 +186,18 @@ const uniqueTags = Object.entries(tagFreq)
       {posts.length === 0 ? (
         <p>No posts found.</p>
       ) : (
-        posts.map((post, index) => {
+        posts.map((post: { title: unknown; content: any; id: any; tags: any[]; }, index: any) => {
           const isUntitled = !post.title || post.title === 'Untitled Post';
           const preview = truncateContent(post.content);
           return (
-            <a href={`/product/${post.id}`} class="post-link" key={post.id}>  <!-- Use post.id for direct link -->
+            <a href={`/product/${post.id}`} class="post-link" data-slug={post.id}>  <!-- Use post.id for direct link -->
               <article class="post-card">
                 <h2 class="post-title">
                   {post.title}
                   {isUntitled && <em> (Untitled)</em>}
                 </h2>
                 {post.tags.length > 0 && (
-                  <span class="post-tags">{post.tags.map(t => t.name).join(', ')}</span>
+                  <span class="post-tags">{post.tags.map((t: { name: any; }) => t.name).join(', ')}</span>
                 )}
                 <p class="post-preview">{preview}</p>
               </article>

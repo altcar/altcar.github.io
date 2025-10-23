@@ -14,13 +14,13 @@ export async function getStaticPaths() {
 }
 
 const posts = await getAllPosts();
-const uniqueTags = getUniqueTags(posts);
-const tagSlug = Astro.params.tag;
+const uniqueTags: Record<string, string> = getUniqueTags(posts);
+const tagSlug = String(Astro.params.tag);
 const tagName = uniqueTags[tagSlug] || 'Unknown';
 const filteredPosts = getPostsByTag(posts, tagSlug);
 
 // Truncate helper
-function truncateContent(content, maxLength = 150) {
+function truncateContent(content: string, maxLength = 150) {
   if (content.length <= maxLength) return content;
   return content.slice(0, maxLength).trim() + '...';
 }
@@ -130,14 +130,14 @@ function truncateContent(content, maxLength = 150) {
       <p>No posts found for this tag.</p>
     ) : (
       filteredPosts.map((post) => (
-        <article class="post-card" key={post.id}>
+        <article class="post-card" data-slug={post.id}>
           <h2 class="post-title">
             <a href={`/product/${post.id}`}>
               {post.title}
             </a>
           </h2>
           {post.tags.length > 0 && (
-            <span class="post-tags">{post.tags.map(tag => tag.name).join(', ')}</span>
+            <span class="post-tags">{post.tags.map((tag: { name: any; }) => tag.name).join(', ')}</span>
           )}
           <p class="post-preview">{truncateContent(post.content)}</p>
         </article>

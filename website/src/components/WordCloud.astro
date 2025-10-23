@@ -9,9 +9,13 @@ if (!data || typeof data !== 'object') {
   throw new Error('data prop must be an object with word:weight pairs');
 }
 
-const values = Object.values(data);
-const minWeight = Math.min(...values);
-const maxWeight = Math.max(...values);
+// Convert values to numbers and filter out any non-numeric entries
+const values = Object.values(data).map(v => Number(v));
+const numericValues = values.filter(v => !Number.isNaN(v));
+
+// Fallback to 0 if there are no numeric values to avoid Math.min/Math.max errors
+const minWeight = numericValues.length ? Math.min(...numericValues) : 0;
+const maxWeight = numericValues.length ? Math.max(...numericValues) : 0;
 const weightRange = maxWeight - minWeight || 1;
 
 const sizeClasses = [
@@ -76,7 +80,7 @@ const entries = Object.entries(data).map(([word, weight]) => ({
     container.innerHTML = '';
 
     // Sort by weight descending
-    entries.sort((a, b) => b.weight - a.weight);
+    entries.sort((a: { weight: number; }, b: { weight: number; }) => b.weight - a.weight);
 
     // Find max weight index (first after sort)
     const maxIndex = 0;
@@ -103,8 +107,8 @@ const entries = Object.entries(data).map(([word, weight]) => ({
     const maxRadius = 180;
     const others = entries.slice(1); // Exclude center
 
-    others.forEach((entry, i) => {
-      const normalizedWeight = (entry.weight - Math.min(...entries.map(e => e.weight))) / (Math.max(...entries.map(e => e.weight)) - Math.min(...entries.map(e => e.weight)) || 1);
+    others.forEach((entry: { weight: number; sizeClass: any; weightClass: any; word: string | null; }, i: number) => {
+      const normalizedWeight = (entry.weight - Math.min(...entries.map((e: { weight: any; }) => e.weight))) / (Math.max(...entries.map((e: { weight: any; }) => e.weight)) - Math.min(...entries.map((e: { weight: any; }) => e.weight)) || 1);
       const radius = minRadius + normalizedWeight * (maxRadius - minRadius);
       
       // Distribute angles evenly (or add randomness: + (Math.random() - 0.5) * 30 for variety)

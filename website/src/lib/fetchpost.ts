@@ -4,7 +4,7 @@ import { decodeMojibake } from './utils.ts'; // Adjust path if needed
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQQ-ELkfhDKgQcw7If4Rnn9CbeTanMvAl9SppYVo9W9uY_b5vp1wzFClaQQHD10VwkMg636wJq4f9F4/pub?gid=0&single=true&output=csv'; // Your CDN URL
 
-function slugify(str) {
+function slugify(str: string) {
   // Unicode-aware: Keep letters (\p{L}), numbers (\p{N}), spaces, and hyphens
   return str.toLowerCase().trim()
     .replace(/[^\p{L}\p{N}\s-]/gu, '')  // 'u' flag for Unicode; 'g' global
@@ -29,9 +29,9 @@ export async function getAllPosts() {
     delimiter: ','
   }).data;
 
-  const validPosts = parsed.filter(row => row.content);
+  const validPosts = parsed.filter((row: { content: any; }) => row.content);
 
- return validPosts.map((row, index) => ({
+ return validPosts.map((row: { Title: any; tag: string; content: any; }, index: number) => ({
     id: index + 1,  // Unique ID for keys/slugs
     title: row.Title || 'Untitled Post',
     tags: row.tag ? row.tag.split(',').map(t => ({
@@ -43,28 +43,29 @@ export async function getAllPosts() {
 }
 
 // New: Get tag frequencies for word cloud
-export function getTagFrequencies(posts) {
-  const freq = {};
+export function getTagFrequencies(posts: any[]) {
+  const freq: Record<string, number> = {};
   posts.forEach(post => {
-    post.tags.forEach(tag => {
-      freq[tag.slug] = (freq[tag.slug] || 0) + 1;
+    (post.tags || []).forEach((tag: any) => {
+      const slug = String(tag.slug);
+      freq[slug] = (freq[slug] || 0) + 1;
     });
   });
   return freq;
 }
 
 // New: Get unique tags for paths
-export function getUniqueTags(posts) {
-  const unique = {};
+export function getUniqueTags(posts: any[]) {
+  const unique: Record<string, string> = {};
   posts.forEach(post => {
-    post.tags.forEach(tag => {
-      unique[tag.slug] = tag.name;  // Map slug to display name
+    (post.tags || []).forEach((tag: { slug: string | number; name: any; }) => {
+      unique[String(tag.slug)] = String(tag.name);  // Map slug to display name
     });
   });
   return unique;
 }
 
 // New: Filter posts by tag slug
-export function getPostsByTag(posts, tagSlug) {
-  return posts.filter(post => post.tags.some(tag => tag.slug === tagSlug));
+export function getPostsByTag(posts: any[], tagSlug: string) {
+  return posts.filter(post => post.tags.some((tag: { slug: string; }) => tag.slug === tagSlug));
 }

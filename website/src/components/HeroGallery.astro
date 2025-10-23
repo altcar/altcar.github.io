@@ -67,20 +67,24 @@ const totalSlides = experiences.length;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.slider-container');
-    const totalSlides = parseInt(container.dataset.totalSlides);
+    const container = document.querySelector('.slider-container') as HTMLElement | null;
+    const totalSlides = parseInt(container?.dataset?.totalSlides ?? '0');
     let currentSlide = 0;
     const slidesWrapper = document.getElementById('slides-wrapper');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const indicators = document.querySelectorAll('.indicator');
 
-    if (!slidesWrapper || !prevBtn || !nextBtn || indicators.length === 0) {
+    if (!container || !slidesWrapper || !prevBtn || !nextBtn || indicators.length === 0) {
       console.error('Slider elements not found');
       return;
     }
 
     function updateSlide() {
+      if (!slidesWrapper) {
+        console.error('slidesWrapper is null');
+        return;
+      }
       slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
       indicators.forEach((indicator, index) => {
         indicator.classList.toggle('active', index === currentSlide);
@@ -97,7 +101,7 @@ const totalSlides = experiences.length;
       updateSlide();
     }
 
-    function goToSlide(index) {
+    function goToSlide(index: number) {
       currentSlide = index;
       updateSlide();
     }
@@ -113,20 +117,25 @@ const totalSlides = experiences.length;
     let intervalId = setInterval(nextSlide, 5000);
 
     // Pause on hover
-    container.addEventListener('mouseenter', () => clearInterval(intervalId));
-    container.addEventListener('mouseleave', () => {
+    container?.addEventListener('mouseenter', () => clearInterval(intervalId));
+    container?.addEventListener('mouseleave', () => {
       intervalId = setInterval(nextSlide, 5000);
     });
 
     // Indicator hover effects
-    indicators.forEach(indicator => {
-      indicator.addEventListener('mouseover', (e) => {
-        e.target.style.background = 'white';
-      });
-      indicator.addEventListener('mouseout', (e) => {
-        e.target.style.background = currentSlide === parseInt(e.target.dataset.slide) ? 'white' : 'rgba(255,255,255,0.5)';
-      });
-    });
+        indicators.forEach(indicator => {
+          indicator.addEventListener('mouseover', (e) => {
+            const target = e.target;
+            if (!(target instanceof HTMLElement)) return;
+            target.style.background = 'white';
+          });
+          indicator.addEventListener('mouseout', (e) => {
+            const target = e.target;
+            if (!(target instanceof HTMLElement)) return;
+            const slideIndex = parseInt(target.dataset.slide ?? '0', 10);
+            target.style.background = currentSlide === slideIndex ? 'white' : 'rgba(255,255,255,0.5)';
+          });
+        });
 
     console.log('Slider initialized with', totalSlides, 'slides');
   });

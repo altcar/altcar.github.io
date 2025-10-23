@@ -9,7 +9,7 @@ import { getAllPosts } from '../../lib/fetchpost.ts';
 // const { page } = Astro.props;
 // const currentPost = page.data[0];
 
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths({ }) {
   const posts = await getAllPosts();
 
   if (posts.length === 0) {
@@ -17,7 +17,7 @@ export async function getStaticPaths({ paginate }) {
   }
   
   // Manually generate paths/props to avoid paginate's undefined params bug
-  const paths = posts.map((post, index) => {
+  const paths = posts.map((post: any, index: number) => {
     const currentPageNum = index + 1;
     const hasPrev = currentPageNum > 1;
     const hasNext = currentPageNum < posts.length;
@@ -74,14 +74,14 @@ const currentPost = page.data[0];
 
 
 // New: Helper to format content with line breaks and auto-links
-function formatContent(rawContent) {
+function formatContent(rawContent: string) {
   if (!rawContent) return '';
 
   // Simple URL regex (basic; add http:// if missing)
   const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g;
 
   // Split into paragraphs by double newlines
-  const paragraphs = rawContent.split('\n\n').map(para => {
+  const paragraphs = rawContent.split('\n\n').map((para: string) => {
     // Within para, replace single \n with <br />, and auto-link URLs
     let formattedPara = para
       .replace(/\n/g, '<br />')  // Single newlines to breaks
@@ -108,7 +108,7 @@ const formattedContent = formatContent(currentPost?.content);
         {currentPost?.tags.length > 0 ? (
           <p>
             <strong>Tags:</strong>{' '}
-            {currentPost.tags.map((tag, index) => (
+            {currentPost.tags.map((tag: { slug: any; name: unknown; }, index: number) => (
               <Fragment key={tag.slug}>
                 <a href={`/product/tag/${tag.slug}`}>{tag.name}</a>
                 {index < currentPost.tags.length - 1 && ', '}
