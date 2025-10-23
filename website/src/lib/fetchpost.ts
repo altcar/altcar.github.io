@@ -22,19 +22,19 @@ export async function getAllPosts() {
   let csvText = await response.text();
   csvText = decodeMojibake(csvText);
 
-  const parsed = Papa.parse(csvText, {
+  const parsed = Papa.parse<Record<string, any>>(csvText, {
     header: true,
     skipEmptyLines: true,
     dynamicTyping: false,
     delimiter: ','
-  }).data;
+  }).data as Array<Record<string, any>>;
 
-  const validPosts = parsed.filter((row: { content: any; }) => row.content);
+  const validPosts = (parsed as Array<Record<string, any>>).filter(row => row.content);
 
- return validPosts.map((row: { Title: any; tag: string; content: any; }, index: number) => ({
+ return validPosts.map((row: Record<string, any>, index: number) => ({
     id: index + 1,  // Unique ID for keys/slugs
     title: row.Title || 'Untitled Post',
-    tags: row.tag ? row.tag.split(',').map(t => ({
+    tags: row.tag ? String(row.tag).split(',').map((t: string) => ({
       name: t.trim(),
       slug: slugify(t.trim())
     })) : [],

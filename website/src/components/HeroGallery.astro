@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar.astro";
 import  getGalleryData  from '../lib/fetchHero.ts';
 import '../styles/HeroGallery.css'; // We'll add CSS next
 
-const experiences: Experience[] = await getGalleryData();
+const experiences = (await getGalleryData()) as Experience[];
 
 interface Experience {
   Position: string;
