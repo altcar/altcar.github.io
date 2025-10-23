@@ -8,50 +8,44 @@ import NavBar from "../components/NavBar.astro";
 
 const hikes = [
   {
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Lizard",
+    body: "Cornwall",
     href: "#new1",
     picurl: "/hike/hike.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
-    href: "#new1",
-    picurl: "/hike/hike1.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Bristol",
+    body: "Cabot Tower",
     href: "#new1",
     picurl: "/hike/hike2.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Bristol",
+    body: "Harbourside",
     href: "#new1",
     picurl: "/hike/hike3.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Exeter",
+    body: "Sunrise",
     href: "#new1",
     picurl: "/hike/hike4.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Bristol",
+    body: "Cabot Tower",
     href: "#new1",
     picurl: "/hike/hike5.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Bristol",
+    body: "Suspension Bridge",
     href: "#new1",
     picurl: "/hike/hike6.jpg",
     date: "2025-10-15 23:59"
   },{
-    title: "Hiking",
-    body: "Peak Dist.",
+    title: "Bristol",
+    body: "Cabot Tower",
     href: "#new1",
     picurl: "/hike/hike7.jpg",
     date: "2025-10-15 23:59"
@@ -66,29 +60,30 @@ const hikes = [
         <nav class="sticky top-0 text-end"> 
          <NavBar></NavBar>
         </nav>
+
         <div class="flex flex-end h-full">
         <div class="layout-content mt-12 flex items-center mb-32 justify-end flex-col text-center">
             <h2 class=" text-5xl font-semibold">Rewards</h2>
-            <p class="leading-normal text-lg my-12 w-[40%]">
+            <p class="leading-normal text-md my-12 w-[40%]">
                Following the app’s recommendations may lead to rewarding hikes and lasting outdoor adventures, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which hikers can complete specific trails or challenges to earn points and exchange them for gear discounts or exclusive trail perks.   </p>
         </div></div>
     </div>
 
         <div class="flex flex-col items-center my-16">
-            <div class="flex flex-col items-center w-fit p-5 bg-orange-950 rounded-xl">
+            <div class="flex flex-row items-center w-fit p-5 bg-slate-500">
                 <Image src="/hike/bike.jpg" alt="A bird." width="300" height="200" />
-                <div class="flex flex-col items-center w-fit px-16  ">
-                    <h2 class="mb-8 text-3xl">Meow</h2>
+                <div class="flex flex-col items-center w-fit pl-16  ">
+                    <h2 class="mb-8 text-3xl font-bold">Rayleigh Gritstone 500</h2>
                     <div class="flex flex-wrap flex-row">
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
-                            <h2 class="text-2xl">10</h2>
+                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
+                            <h2 class="text-2xl">10y</h2>
                             <h2>Age</h2>
                         </div>
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
+                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
                             <h2 class="text-2xl">12kg</h2>
                             <h2>Weight</h2>
                         </div>
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
+                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
                             <h2 class="text-2xl">5</h2>
                             <h2>Owner</h2>
                         </div>
@@ -101,7 +96,7 @@ const hikes = [
 
 
     <hr>
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center bg-slate-200 py-16">
         <div class="photos-container grid grid-cols-2 gap-3 w-fit">
                {hikes.map((hike) => (
         <Card title={hike.title} body={hike.body} href={hike.href} picurl={hike.picurl} date={hike.date} />
@@ -111,14 +106,14 @@ const hikes = [
     <div class="top h-[500px]">
         <div class="h-full mt-32">
             <div class="w-full flex h-72">
-                <div class="bg-red-900 w-full">
+                <div class="bg-gray-900 w-full">
                     <a href="/meter">
-                    <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>previous</div>
+                    <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">METER</h1>&lt;</div>
                 </a>
                 </div>    
-                <div class="bg-blue-900 w-full">
+                <div class="bg-slate-800 w-full">
                 <a href="/">  
-                    <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Veolia</h1>next</div>
+                    <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Home</h1>&gt;</div>
                 </a>  
                 </div>    
             </div>  
@@ -136,8 +131,12 @@ const hikes = [
 
 
 .cover-bg{
-        background: url("../svg/farm.png") center center no-repeat;
-     
+        background: url("../hike/hike2.jpg")
+     no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
     .cover{
         

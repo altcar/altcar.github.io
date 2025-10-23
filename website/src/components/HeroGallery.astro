@@ -24,7 +24,7 @@ const totalSlides = experiences.length;
   <div class="slides-wrapper" id="slides-wrapper" style={`display: flex; height: 90vh; width: ${totalSlides * 100}vw; `}>
     <!-- transition: transform 0.5s ease-in-out; -->
         {experiences.map((exp) => (
-      <div class="slide" 
+      <div class="slide"
            style={`height: 90vh; width: 100vw; background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url(${exp.imageurl}); background-size: cover; background-position: center; position: relative; display: flex; align-items: flex-end; justify-content: center; text-align: center; color: white; flex-shrink: 0;`}>
        
        
@@ -60,11 +60,11 @@ const totalSlides = experiences.length;
   <button class="nav-btn next" id="next-btn" style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 1rem; font-size: 2rem; cursor: pointer; z-index: 10;">›</button>
   
   <!-- Indicators -->
-  <div class="indicators" id="indicators" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
+  <div class="indicators " id="indicators" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
     {Array.from({ length: totalSlides }, (_, i) => (
       <button class={`indicator ${i === 0 ? 'active' : ''}`} 
               data-slide={i} 
-              style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; transition: background 0.3s;"></button>
+              style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none;  transition: background 0.3s;"></button>
     ))}
   </div>
 </div>
