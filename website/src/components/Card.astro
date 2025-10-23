@@ -11,9 +11,10 @@ const { picurl, href, title, body } = Astro.props;
 
 <div class="projectcard-bg m-3 bg-[var(--urlimg)]" style={` --urlimg: url('${picurl}');`}>
 	
-	<a class="projectcard flex lg:hidden items-center justify-center h-full" href={href} transition:name="hero" >
-		{title}<br>
-		{body}
+	<a class="projectcard flex lg:hidden items-center justify-center  h-full" href={href} transition:name="hero" >
+		<div class="w-[80%]"><div class="font-bold">{title}</div>
+		{body}</div>
+		
 	</a>
 </div>
 <style>

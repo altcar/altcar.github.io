@@ -3,6 +3,61 @@ import Layout from "../layouts/Layout.astro"
 import { Image } from "astro:assets";
 import Card from "../components/PhotoCard.astro";
 import NavBar from "../components/NavBar.astro";
+
+
+
+const hikes = [
+  {
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike1.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike2.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike3.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike4.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike5.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike6.png",
+    date: "2025-10-15 23:59"
+  },{
+    title: "Hiking",
+    body: "Peak Dist.",
+    href: "#new1",
+    picurl: "/hike/hike7.png",
+    date: "2025-10-15 23:59"
+  },
+  
+];
 ---
 
 <Layout title="my adventure">
@@ -15,8 +70,7 @@ import NavBar from "../components/NavBar.astro";
         <div class="layout-content mt-12 flex items-center mb-32 justify-end flex-col text-center">
             <h2 class=" text-5xl font-semibold">Rewards</h2>
             <p class="leading-normal text-lg my-12 w-[40%]">
-                Following the app’s recommendations may lead to good long-term results, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which farmers can complete specific activities to earn points and exchange them for coupons.
-            </p>
+               Following the app’s recommendations may lead to rewarding hikes and lasting outdoor adventures, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which hikers can complete specific trails or challenges to earn points and exchange them for gear discounts or exclusive trail perks.   </p>
         </div></div>
     </div>
 
@@ -27,15 +81,15 @@ import NavBar from "../components/NavBar.astro";
                     <h2 class="mb-8 text-3xl">Meow</h2>
                     <div class="flex flex-wrap flex-row">
                         <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
-                            <h2 class="text-2xl">4</h2>
+                            <h2 class="text-2xl">10</h2>
                             <h2>Age</h2>
                         </div>
                         <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
-                            <h2 class="text-2xl">17.4</h2>
+                            <h2 class="text-2xl">12kg</h2>
                             <h2>Weight</h2>
                         </div>
                         <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-xl mx-5">
-                            <h2 class="text-2xl">1</h2>
+                            <h2 class="text-2xl">5</h2>
                             <h2>Owner</h2>
                         </div>
                         
@@ -49,14 +103,9 @@ import NavBar from "../components/NavBar.astro";
     <hr>
     <div class="flex flex-col items-center">
         <div class="photos-container grid grid-cols-2 gap-3 w-fit">
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
-            <Card title="Hiking" body="Peak Dist." href="#new1" picurl="/farm.png"  date="2019-09-15 23:59"></Card>
+               {hikes.map((hike) => (
+        <Card title={hike.title} body={hike.body} href={hike.href} picurl={hike.picurl} date={hike.date} />
+    ))}
         </div>
     </div>
     <div class="top h-[500px]">

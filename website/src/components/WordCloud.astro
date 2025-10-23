@@ -103,8 +103,8 @@ const entries = Object.entries(data).map(([word, weight]) => ({
     const centerY = containerSize / 2;
 
     // Distances: closer for larger words (normalized 0-1, map to 60-180px radius)
-    const minRadius = 150;
-    const maxRadius = 180;
+    const minRadius = (window.innerWidth > 768) ? 150 : 60;
+    const maxRadius = (window.innerWidth > 768) ? 180 : 150;
     const others = entries.slice(1); // Exclude center
 
     others.forEach((entry: { weight: number; sizeClass: any; weightClass: any; word: string | null; }, i: number) => {
