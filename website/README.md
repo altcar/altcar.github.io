@@ -2,22 +2,23 @@
 
 
 ```text
-Gallery lightbox
+# Gallery lightbox
 /src/lib/fetchHero.ts (fetch google sheet and parse) 
     /compoents/HeroGallery.astro (gallery lightbox)
     /pages/index.astro 
 
-Posts blog (need rerun if new stuff added)
+# Posts blog (need rerun if new stuff added)
 /src/lib/utils.ts (decode ANSI to unicode
 	/fetchpost.ts (fetch google sheet and parse) 
     /pages/product/index.astro (all post)
 		  /[page]      (pagination create page from parsed)
 		  /tag/[tag]   (pagination create tags from parsed)
 
-Photo Card
+# Photo Card
 /src/compoents/PhotoCard.astro (gallery lightbox)
         /pages/meow.astro   (Gallery)
 
+# Card
 /src/compoents/Card.astro (gallery lightbox)
         /pages/index.astro  (Peek on what i did)
 ```
