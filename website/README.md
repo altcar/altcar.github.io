@@ -11,8 +11,8 @@
 /src/lib/utils.ts (decode ANSI to unicode
 	/fetchpost.ts (fetch google sheet and parse) 
     /pages/product/index.astro (all post)
-		  /[page]      (pagination create page from parsed)
-		  /tag/[tag]   (pagination create tags from parsed)
+		          /[page]      (pagination create page from parsed)
+	        	  /tag   /[tag]   (pagination create tags from parsed)
 
 # Photo Card
 /src/compoents/PhotoCard.astro (gallery lightbox)
