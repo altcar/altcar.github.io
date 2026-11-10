@@ -57,6 +57,7 @@ export const projects: Project[] = [
       'A drop-off network for disposable vapes across Sheffield. We collect, log and recycle the batteries instead of sending them to landfill.',
     tags: ['Operations', 'Sustainability', 'Data'],
     metric: '800kg+ batteries diverted',
+    href: 'https://github.com/altcar/VapeDrop',
     image: '/img/vapedrop.webp',
     glyph: 'V',
     featured: true,
@@ -81,7 +82,7 @@ export const projects: Project[] = [
     year: '2026',
     kicker: 'Event systems',
     blurb:
-      'A production QR pass system: visitors register once, seven employer stands scan their pass, and the chocolate counter only hands over the reward when the card is full. Astro SSR on Workers with D1; fonts, icons and the QR scanner all bundled.',
+      'A production QR pass system: visitors register once, seven employer stands scan their pass, and the chocolate counter hands over the reward when the card is full. Astro SSR on Workers with D1.',
     tags: ['Astro', 'Workers', 'D1'],
     metric: '7 stands · zero third-party CDNs',
     href: 'https://gcf.hheylau.workers.dev',

@@ -103,8 +103,9 @@ const teaser = photos.slice(0, 3);
       <div class="work-list" data-work-list>
         {
           featured.map((project, index) => {
-            const href = project.detail ?? project.href ?? '#';
+            const href = project.detail ?? project.href;
             const isExternal = Boolean(project.href && !project.detail);
+            const hasLink = Boolean(href);
             return (
               <a
                 class="work-item reveal"
@@ -129,7 +130,7 @@ const teaser = photos.slice(0, 3);
                     ))}
                   </span>
                 </span>
-                <span class="work-item__arrow" aria-hidden="true">{isExternal ? '↗' : '→'}</span>
+                <span class="work-item__arrow" aria-hidden="true">{hasLink ? (isExternal ? '↗' : '→') : ''}</span>
               </a>
             );
           })
