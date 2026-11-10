@@ -8,8 +8,6 @@ import { mkdir, writeFile } from 'node:fs/promises';
 const previews = [
   ['work/vapedrop.jpg', 'vapedrop.webp'],
   ['work/ukseds.jpg', 'ukseds.webp'],
-  ['work/emerge.jpg', 'emerge.webp'],
-  ['work/rag.jpg', 'rag.webp'],
 ];
 
 await mkdir('public/img', { recursive: true });
