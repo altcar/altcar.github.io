@@ -1,10 +1,79 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import Strip from '../components/Strip.astro';
 import { Image } from 'astro:assets';
 import { featured, projects, site } from '../data/site';
 import { photos } from '../data/photos';
+
+type CardMeta = {
+  badge: string;
+  glyph: 'ship' | 'flask' | 'briefcase' | 'bolt' | 'flag' | 'trophy';
+  tone: { bg: string; ink: string };
+  ambient: string;
+};
+
+const meta: Record<string, CardMeta> = {
+  wizzibiz: {
+    badge: 'Built & Shipped',
+    glyph: 'ship',
+    tone: { bg: '#fdedc2', ink: '#6b4200' },
+    ambient: 'linear-gradient(165deg, #fff6dd 0%, #ffe6b4 55%, #ffd9a0 100%)',
+  },
+  rask: {
+    badge: 'Research',
+    glyph: 'flask',
+    tone: { bg: '#e8e5ff', ink: '#37298c' },
+    ambient: 'linear-gradient(165deg, #f1eeff 0%, #ddd7ff 58%, #cfc7ff 100%)',
+  },
+  gcf: {
+    badge: 'Client work',
+    glyph: 'briefcase',
+    tone: { bg: '#dcf1e3', ink: '#1a5a34' },
+    ambient: 'linear-gradient(165deg, #eaf7ee 0%, #d2eedb 58%, #bfe6cc 100%)',
+  },
+  bus: {
+    badge: 'Live data',
+    glyph: 'bolt',
+    tone: { bg: '#dbeafb', ink: '#124a7a' },
+    ambient: 'linear-gradient(165deg, #eaf3fd 0%, #d1e5fb 58%, #bcd9f8 100%)',
+  },
+  learntk: {
+    badge: 'Founded',
+    glyph: 'flag',
+    tone: { bg: '#ffe3de', ink: '#8a2f22' },
+    ambient: 'linear-gradient(165deg, #fff0ec 0%, #ffdcd4 58%, #ffcdc2 100%)',
+  },
+  ats: {
+    badge: 'Hackathon',
+    glyph: 'trophy',
+    tone: { bg: '#fdf0d0', ink: '#6f4703' },
+    ambient: 'linear-gradient(165deg, #fff7e3 0%, #ffe9bf 58%, #ffdfa6 100%)',
+  },
+};
+
+const glyphs: Record<CardMeta['glyph'], string> = {
+  ship: 'M12 3c2.5 2 4 5 4 8l2 3-4-1-2 4-2-4-4 1 2-3c0-3 1.5-6 4-8Z',
+  flask: 'M9 3h6M10 3v5.5L5.5 17a2 2 0 0 0 1.7 3h9.6a2 2 0 0 0 1.7-3L14 8.5V3',
+  briefcase: 'M3.5 8h17v11h-17zM9 8V5h6v3',
+  bolt: 'M13 2 4.5 14H10l-1 8 8.5-12H12l1-8Z',
+  flag: 'M6 21V4m0 0h11l-2 4 2 4H6',
+  trophy: 'M8 4h8v5a4 4 0 0 1-8 0V4ZM8 5H5v2a3 3 0 0 0 3 3m8-5h3v2a3 3 0 0 1-3 3M9 20h6m-3-4v4',
+};
+
+const cards = featured.map((project) => {
+  const info = meta[project.slug] ?? {
+    badge: 'Built',
+    glyph: 'ship' as const,
+    tone: { bg: '#eceae4', ink: '#4a4740' },
+    ambient: 'linear-gradient(165deg, #f6f5f1 0%, #eae8e1 100%)',
+  };
+  return {
+    project,
+    info,
+    href: project.detail ?? project.href ?? '/work/',
+    external: Boolean(project.href && !project.detail),
+  };
+});
 
 const withImages = projects.filter((project) => project.image);
 const stripProjects = withImages.slice(0, 7).map((project) => ({
@@ -17,23 +86,43 @@ const teaser = photos.slice(1, 5);
 
 <Base title={site.title} description={site.description}>
   <section class="hero wrap">
+    <p class="hero__eyebrow">Bristol, UK</p>
     <h1 class="hero__title">
-      <span>Shalev studies Robotics <span class="soft">@</span> Bristol</span>
-      <span class="soft">Co-founder <span class="soft">@</span> METER</span>
-      <span class="serif">The rest is off the CV.</span>
+      I build robots, then the software that makes them <span class="serif">useful.</span>
     </h1>
-    <p class="hero__note">Research and projects at the Bristol Robotics Laboratory.</p>
+    <p class="hero__note">
+      Research at the Bristol Robotics Laboratory. Co-founder at METER. The rest is off the CV.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--dark" href="#work">
+        See the work
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 3v10m0 0 4-4m-4 4L4 9" />
+        </svg>
+      </a>
+      <a class="btn" href="mailto:connecti@shalev.eu.org">Say hello</a>
+    </div>
   </section>
 
-  <div class="strips">
-    <Strip items={stripProjects} speed="70s" />
-    <Strip items={stripPhotos} reverse speed="85s" />
-  </div>
+  <section class="section work wrap" id="work">
+    <div class="work__head">
+      <h2>Selected work <span class="count">{featured.length}</span></h2>
 
-  <section class="section wrap" id="work">
-    <div class="section-head">
-      <h2>Selected work <span class="count">{featured.length + 1}</span></h2>
-      <a href="/work/">All projects →</a>
+      <div class="work__hint" data-drag-hint>
+        <span class="drag-hint" aria-hidden="true">
+          <svg viewBox="0 0 56 30">
+            <path d="M50 5c-8-2-19 0-25 5-5 4-8 9-9 15" />
+            <path d="m10 19 6 7 7-4" />
+          </svg>
+          <span class="drag-hint__text">psst — you can drag these</span>
+        </span>
+        <button class="tidy" type="button" data-tidy>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2.5 8a5.5 5.5 0 1 0 1.7-4M2.5 2v3h3" />
+          </svg>
+          Put them back
+        </button>
+      </div>
     </div>
 
     <a class="feature" href="/meter/">
@@ -47,10 +136,71 @@ const teaser = photos.slice(1, 5);
       </span>
     </a>
 
-    <div class="grid">
-      {featured.map((project) => <ProjectCard project={project} />)}
+    <div class="cards" data-drag-canvas>
+      {
+        cards.map(({ project, info, href, external }, index) => (
+          <article
+            class="card"
+            data-drag
+            style={`--i:${index};--badge:${info.tone.bg};--badge-ink:${info.tone.ink};--ambient:${info.ambient}`}
+          >
+            <a
+              class="card__media"
+              href={href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener' : undefined}
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <Image
+                src={project.image!}
+                alt=""
+                widths={[520, 760, 1100]}
+                sizes="(max-width: 780px) 92vw, (max-width: 1140px) 46vw, 520px"
+                format="webp"
+                quality={80}
+                loading={index < 2 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <span class="card__gloss" />
+              <span class="card__badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d={glyphs[info.glyph]} />
+                </svg>
+                {info.badge}
+              </span>
+              <span class="card__year">{project.year}</span>
+            </a>
+
+            <div class="card__body">
+              <h3 class="card__title">
+                <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                  {project.title}
+                </a>
+              </h3>
+              <p class="card__desc">{project.summary}</p>
+              <div class="card__foot">
+                <ul class="tags">
+                  {project.tags.map((tag) => <li>{tag}</li>)}
+                </ul>
+                <a class="btn btn--dark card__cta" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                  View project
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 12 12 4M5.5 4H12v6.5" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
+
+  <div class="strips">
+    <Strip items={stripProjects} speed="70s" />
+    <Strip items={stripPhotos} reverse speed="85s" />
+  </div>
 
   <section class="section wrap">
     <div class="section-head">
@@ -76,3 +226,208 @@ const teaser = photos.slice(1, 5);
     </div>
   </section>
 </Base>
+
+<script>
+  const canvas = document.querySelector<HTMLElement>('[data-drag-canvas]');
+  const hint = document.querySelector<HTMLElement>('[data-drag-hint]');
+  const tidy = document.querySelector<HTMLButtonElement>('[data-tidy]');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-drag]'));
+  const fine = window.matchMedia('(pointer: fine)').matches;
+
+  if (canvas && fine && cards.length) {
+    canvas.classList.add('is-drag-canvas');
+
+    const resets: Array<() => void> = [];
+    let used = false;
+    let stack = 10;
+
+    const markUsed = () => {
+      if (used) return;
+      used = true;
+      hint?.classList.add('is-used');
+    };
+
+    const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+    // Rubber-band past the canvas edge instead of stopping dead.
+    const elastic = (value: number, min: number, max: number) =>
+      value < min ? min + (value - min) * 0.3 : value > max ? max + (value - max) * 0.3 : value;
+
+    type Point = { x: number; y: number };
+
+    /**
+     * Critically damped spring, seeded with the release velocity. Direct transform
+     * writes only — no CSS transition, no layout reads per frame.
+     */
+    const spring = (
+      card: HTMLElement,
+      from: Point,
+      to: Point,
+      velocity: Point,
+      onDone?: () => void,
+    ) => {
+      let x = from.x;
+      let y = from.y;
+      let vx = velocity.x;
+      let vy = velocity.y;
+      let frame = 0;
+      let previous = performance.now();
+
+      const k = 190;
+      const damping = 2 * Math.sqrt(k) * 0.92;
+
+      const step = (now: number) => {
+        const dt = Math.min(0.032, Math.max(0.001, (now - previous) / 1000));
+        previous = now;
+
+        vx += (-k * (x - to.x) - damping * vx) * dt;
+        vy += (-k * (y - to.y) - damping * vy) * dt;
+        x += vx * dt;
+        y += vy * dt;
+
+        card.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+
+        const settled =
+          Math.abs(x - to.x) < 0.35 &&
+          Math.abs(y - to.y) < 0.35 &&
+          Math.abs(vx) < 8 &&
+          Math.abs(vy) < 8;
+
+        if (settled) {
+          card.style.transform = `translate3d(${to.x.toFixed(2)}px, ${to.y.toFixed(2)}px, 0)`;
+          onDone?.();
+          return;
+        }
+
+        frame = requestAnimationFrame(step);
+      };
+
+      frame = requestAnimationFrame(step);
+      return () => cancelAnimationFrame(frame);
+    };
+
+    cards.forEach((card) => {
+      let pos: Point = { x: 0, y: 0 };
+      let current: Point = { x: 0, y: 0 };
+      let cancelSpring: (() => void) | null = null;
+      let dragging = false;
+      let moved = false;
+      let start: Point = { x: 0, y: 0 };
+      let origin: Point = { x: 0, y: 0 };
+      let last = { x: 0, y: 0, t: 0 };
+      let velocity: Point = { x: 0, y: 0 };
+      let limits = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+
+      card.addEventListener('dragstart', (event) => event.preventDefault());
+
+      card.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0 || !event.isPrimary) return;
+
+        cancelSpring?.();
+        cancelSpring = null;
+
+        dragging = true;
+        moved = false;
+        start = { x: event.clientX, y: event.clientY };
+        origin = { ...pos };
+        current = { ...pos };
+        last = { x: event.clientX, y: event.clientY, t: performance.now() };
+        velocity = { x: 0, y: 0 };
+
+        const bounds = canvas.getBoundingClientRect();
+        const rect = card.getBoundingClientRect();
+        const pad = 6;
+        const baseLeft = rect.left - pos.x;
+        const baseTop = rect.top - pos.y;
+
+        limits = {
+          minX: bounds.left - baseLeft + pad,
+          maxX: bounds.right - (baseLeft + rect.width) - pad,
+          minY: bounds.top - baseTop + pad,
+          maxY: bounds.bottom - (baseTop + rect.height) - pad,
+        };
+
+        card.setPointerCapture(event.pointerId);
+        card.classList.add('is-dragging');
+        card.style.zIndex = String(++stack);
+      });
+
+      card.addEventListener('pointermove', (event) => {
+        if (!dragging) return;
+
+        const dx = origin.x + (event.clientX - start.x);
+        const dy = origin.y + (event.clientY - start.y);
+
+        if (!moved && Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) {
+          moved = true;
+        }
+
+        const now = performance.now();
+        const dt = Math.max(8, now - last.t);
+        velocity = {
+          x: ((event.clientX - last.x) / dt) * 1000,
+          y: ((event.clientY - last.y) / dt) * 1000,
+        };
+        last = { x: event.clientX, y: event.clientY, t: now };
+
+        current = {
+          x: elastic(dx, limits.minX, limits.maxX),
+          y: elastic(dy, limits.minY, limits.maxY),
+        };
+
+        const tilt = clamp(velocity.x * 0.004, -3.5, 3.5);
+        card.style.transform = `translate3d(${current.x.toFixed(2)}px, ${current.y.toFixed(2)}px, 0) rotate(${tilt.toFixed(2)}deg) scale(1.015)`;
+      });
+
+      const release = (event: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        card.classList.remove('is-dragging');
+        if (card.hasPointerCapture(event.pointerId)) card.releasePointerCapture(event.pointerId);
+
+        // Let a flick carry a little past where the finger stopped, then clamp.
+        const target: Point = {
+          x: clamp(current.x + velocity.x * 0.12, limits.minX, limits.maxX),
+          y: clamp(current.y + velocity.y * 0.12, limits.minY, limits.maxY),
+        };
+
+        pos = target;
+        cancelSpring = spring(card, current, target, velocity);
+        if (moved) markUsed();
+      };
+
+      card.addEventListener('pointerup', release);
+      card.addEventListener('pointercancel', release);
+
+      // A drag should never trigger the link underneath it.
+      card.addEventListener(
+        'click',
+        (event) => {
+          if (!moved) return;
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        true,
+      );
+
+      resets.push(() => {
+        cancelSpring?.();
+        cancelSpring = null;
+        const from = { ...pos };
+        pos = { x: 0, y: 0 };
+        card.style.zIndex = '';
+        cancelSpring = spring(card, from, { x: 0, y: 0 }, { x: 0, y: 0 });
+      });
+    });
+
+    tidy?.addEventListener('click', () => {
+      resets.forEach((reset, index) => {
+        window.setTimeout(reset, index * 55);
+      });
+      window.setTimeout(() => {
+        used = false;
+        hint?.classList.remove('is-used');
+      }, 320 + cards.length * 55);
+    });
+  }
+</script>
