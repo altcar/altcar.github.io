@@ -13,65 +13,46 @@ const shots = await Promise.all(
 ---
 
 <Base
-  title="Field notes — Shalev Lau"
+  title="Gallery — Shalev Lau"
   description="Photos from walks around Bristol, Cornwall and Exeter: the Lizard, Cabot Tower, the harbourside and Clifton Suspension Bridge."
 >
-  <section class="page-hero">
-    <div class="wrap">
-      <p class="eyebrow reveal">Field notes</p>
-      <h1 class="page-hero__title reveal" style="--d:1">
-        Out of the lab,<br /><span class="serif">into the hills.</span>
-      </h1>
-      <p class="page-hero__lede reveal" style="--d:2">
-        Photos from walks around Bristol and the West Country. Same instinct as the engineering: look
-        closely, notice what changed, keep the map honest.
-      </p>
-    </div>
-  </section>
+  <header class="page-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><span>Gallery</span>
+    </nav>
+    <h1>Gallery</h1>
+    <p>Walks around Bristol and the West Country. Click any photo for the full size.</p>
+  </header>
 
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="gallery">
-        {
-          shots.map((shot) => (
-            <button
-              class="shot reveal"
-              type="button"
-              data-full={shot.full.src}
-              data-alt={shot.alt}
-              data-caption={`${shot.place} · ${shot.note}`}
-              aria-label={`Open photo: ${shot.place}, ${shot.note}`}
-            >
-              <Image
-                src={shot.src}
-                alt={shot.alt}
-                widths={[400, 700, 1000]}
-                sizes="(max-width: 760px) 92vw, (max-width: 1200px) 45vw, 30vw"
-                format="webp"
-                loading={shot.index === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
-              <span class="shot__cap">
-                <span>{shot.place}</span>
-                <span>{shot.note}</span>
-              </span>
-            </button>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="contact glass spotlight reveal">
-        <p class="eyebrow">Next</p>
-        <h2 class="contact__title">See the <span class="serif">work</span> instead.</h2>
-        <div class="contact__row">
-          <a class="btn btn--primary" href="/work/">All projects <span class="btn__arrow">→</span></a>
-          <a class="btn" href="/meter/">METER</a>
-        </div>
-      </div>
+  <section class="section wrap" style="padding-top:0">
+    <div class="gallery">
+      {
+        shots.map((shot) => (
+          <button
+            class="shot"
+            type="button"
+            data-full={shot.full.src}
+            data-alt={shot.alt}
+            data-caption={`${shot.place} · ${shot.note}`}
+            aria-label={`Open photo: ${shot.place}, ${shot.note}`}
+          >
+            <Image
+              src={shot.src}
+              alt={shot.alt}
+              widths={[400, 700, 1000]}
+              sizes="(max-width: 720px) 92vw, (max-width: 1000px) 45vw, 30vw"
+              format="webp"
+              quality={76}
+              loading={shot.index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+            <span class="shot__cap">
+              <span>{shot.place}</span>
+              <span>{shot.note}</span>
+            </span>
+          </button>
+        ))
+      }
     </div>
   </section>
 
@@ -86,7 +67,6 @@ const shots = await Promise.all(
   const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
   const img = dialog?.querySelector('img');
   const cap = dialog?.querySelector('.lightbox__cap');
-  const close = dialog?.querySelector('.lightbox__close');
 
   document.querySelectorAll<HTMLElement>('.shot[data-full]').forEach((shot) => {
     shot.addEventListener('click', () => {
@@ -98,7 +78,7 @@ const shots = await Promise.all(
     });
   });
 
-  close?.addEventListener('click', () => dialog?.close());
+  dialog?.querySelector('.lightbox__close')?.addEventListener('click', () => dialog?.close());
   dialog?.addEventListener('click', (event) => {
     if (event.target === dialog) dialog.close();
   });

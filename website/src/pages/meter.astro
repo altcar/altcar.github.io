@@ -1,212 +1,83 @@
 ---
 import Base from '../layouts/Base.astro';
-import MeterVisual from '../components/MeterVisual.astro';
+import { Image } from 'astro:assets';
+import emerge from '../assets/work/emerge.jpg';
 import { links, site } from '../data/site';
-
-const pillars = [
-  {
-    title: 'UWB ranging',
-    body: 'Ultra-wideband radios measure time-of-flight between devices, so distance comes out to the centimetre — no camera, no line of sight, no light required.',
-  },
-  {
-    title: 'On-device fusion',
-    body: 'Ranges, heading and motion are fused locally into a live model of where the user is relative to the room. Nothing needs a round trip to the cloud to be useful.',
-  },
-  {
-    title: 'Spoken guidance',
-    body: 'The output is a short, prioritised sentence rather than a map: what is nearby, which way is clear, what is coming up. Fast enough to act on while walking.',
-  },
-];
-
-const steps = [
-  ['01', 'Anchors go in', 'Fixed UWB anchors are placed around the space and told where they are.'],
-  ['02', 'The tag ranges', 'A wearable tag measures distance to each anchor many times per second.'],
-  ['03', 'Fusion runs locally', 'Readings become position and heading on the device, so latency stays low and nothing leaves the user.'],
-  ['04', 'It says what matters', 'Guidance is spoken in plain language, prioritised by what is closest and most urgent.'],
-];
-
-const facts = [
-  ['Role', 'Co-founder & CFO'],
-  ['Founded', '2024'],
-  ['Based', 'Hong Kong · Bristol'],
-  ['Stage', 'Grant-funded · piloting'],
-];
 ---
 
 <Base
-  title="METER — assistive navigation with UWB | Shalev Lau"
+  title="METER — Shalev Lau"
   description="METER is an assistive navigation company I co-founded: ultra-wideband positioning that tells a blind or low-vision user what is around them, in plain language."
 >
-  <section class="meter-hero wrap">
-    <div>
-      <nav class="crumbs reveal" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">METER</span>
-      </nav>
-      <h1 class="meter-wordmark reveal" style="--d:1; margin-top:0.6rem">METER</h1>
-      <p class="lede reveal" style="--d:2; margin-top:1.1rem">
-        Ultra-wideband navigation for people who cannot see the room they are walking into. I co-founded
-        METER in 2024 and lead the software side of the product.
+  <header class="page-head wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><span>METER</span>
+    </nav>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem 2rem">
+      <h1 style="font-size:clamp(2.6rem,1rem+7vw,5.5rem);line-height:0.9;letter-spacing:-0.05em">METER</h1>
+      <p class="article__lede" style="max-width:42ch">
+        Ultra-wideband navigation for people who cannot see the room they are walking into.
       </p>
-
-      <dl class="meter-facts reveal" style="--d:3">
-        {
-          facts.map(([term, value]) => (
-            <div>
-              <dt>{term}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
 
-    <div class="device-stage glass spotlight reveal" style="--d:2">
-      <MeterVisual />
-    </div>
+    <dl class="fact-row">
+      <div><dt>Role</dt><dd>Co-founder &amp; CFO</dd></div>
+      <div><dt>Since</dt><dd>2024</dd></div>
+      <div><dt>Based</dt><dd>Hong Kong · Bristol</dd></div>
+      <div><dt>Stage</dt><dd>Grant-funded, piloting</dd></div>
+    </dl>
+  </header>
+
+  <section class="wrap">
+    <figure>
+      <div class="article__hero">
+        <Image src={emerge} alt="Shalev at the Emerge start-up showcase in Sheffield, sitting behind a table with project worksheets." widths={[600, 1000, 1400]} sizes="(max-width: 1120px) 92vw, 1120px" format="webp" quality={78} />
+      </div>
+      <figcaption class="figure-cap">Emerge start-up showcase, Sheffield.</figcaption>
+    </figure>
   </section>
 
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="section-head__title">
-          <p class="eyebrow">01 — The problem</p>
-          <h2 class="h2">GPS stops at the front door.</h2>
-        </div>
-      </div>
-
-      <div class="about-grid">
-        <div class="about-copy reveal">
-          <p class="lede">
-            Indoors, a cane tells you what you have already touched, and a guide dog tells you what is
-            straight ahead. Neither tells you that the door is two metres to your left, or that the
-            corridor opens out after the next turn.
-          </p>
-          <p class="lede" style="margin-top:1rem">
-            So the question we designed around is the one people actually ask inside a building:
-            <em>what is around me, and which way is clear?</em> Answering it needs position good enough to
-            trust, and a description short enough to act on.
-          </p>
-        </div>
-
-        <aside class="fact-card glass spotlight reveal" style="--d:1">
-          <p class="fact-card__label">Why ultra-wideband</p>
-          <ul>
-            <li>Centimetre-level distance from time-of-flight</li>
-            <li>Works without light, cameras or a clear line of sight</li>
-            <li>Runs on a small battery, locally, with no data plan</li>
-            <li>Does not need to recognise faces or objects to be useful</li>
-          </ul>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="section-head__title">
-          <p class="eyebrow">02 — What we built</p>
-          <h2 class="h2">Three parts, one sentence.</h2>
-        </div>
-      </div>
-
-      <div class="pillars">
-        {
-          pillars.map((pillar, index) => (
-            <article class="pillar glass spotlight reveal" style={`--d:${index}`}>
-              <span class="pillar__num">{`0${index + 1}`}</span>
-              <h3>{pillar.title}</h3>
-              <p>{pillar.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="section-head__title">
-          <p class="eyebrow">03 — How it works</p>
-          <h2 class="h2">From radio to a spoken cue.</h2>
-        </div>
-      </div>
-
-      <div class="steps reveal">
-        {
-          steps.map(([n, title, body]) => (
-            <div class="step">
-              <span class="step__n">{n}</span>
-              <div>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="about-grid">
-        <div class="reveal">
-          <p class="eyebrow">04 — Where we are</p>
-          <h2 class="h2" style="margin-top:1rem">Grant-funded, pre-seed, piloting.</h2>
-          <p class="lede" style="margin-top:1.2rem">
-            METER started as a response to a social problem — indoor independence for blind and low-vision
-            people — and grew into a hardware and software company. We secured an innovation grant to build
-            the first units, pitched to more than fifteen investors and partners, and kept the bill of
-            materials lean so the product can be affordable.
-          </p>
-          <p class="muted" style="margin-top:1.2rem; font-size:0.9rem">
-            The company is still early. If you want the detailed version — technical or commercial — ask
-            me directly.
-          </p>
-        </div>
-
-        <aside class="fact-card glass spotlight reveal" style="--d:1">
-          <p class="fact-card__label">What I own</p>
-          <ul>
-            <li>Co-founder: company formation, finance and grant reporting</li>
-            <li>Full-stack platform: Express/Node, Next.js, MySQL</li>
-            <li>Hardware and software integration across the UWB stack</li>
-            <li>Investor narrative, white papers and pitches</li>
-          </ul>
-          <div class="now__rule" aria-hidden="true"></div>
-          <p class="fact-card__label">Stack</p>
-          <ul class="tag-list" style="gap:0.4rem">
-            <li class="tag">UWB</li>
-            <li class="tag">Embedded C</li>
-            <li class="tag">Next.js</li>
-            <li class="tag">Node</li>
-            <li class="tag">MySQL</li>
-            <li class="tag">Lean manufacturing</li>
-          </ul>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="contact glass spotlight reveal">
-        <p class="eyebrow">METER</p>
-        <h2 class="contact__title">
-          Accessibility hardware is <span class="serif">hard</span>. Worth it.
-        </h2>
-        <p class="lede">
-          Happy to talk about UWB, assistive product design, or what it takes to get a small hardware
-          company off the ground.
+  <section class="section wrap">
+    <div class="article-grid">
+      <h2>What it is</h2>
+      <div>
+        <p>
+          A cane tells you what you have already touched. A guide dog tells you what is straight ahead.
+          Neither tells you the door is two metres to your left. METER answers the question people
+          actually ask indoors — <em>what is around me, and which way is clear?</em> — with a short spoken
+          cue rather than a map.
         </p>
-        <div class="contact__row">
-          <a class="btn btn--primary" href={links.email}>{site.email} <span class="btn__arrow">↗</span></a>
-          <a class="btn" href="/work/">Back to projects</a>
-        </div>
+      </div>
+
+      <h2>How it works</h2>
+      <div>
+        <ul>
+          <li>Fixed UWB anchors measure distance by time-of-flight: centimetres, no camera, no light needed.</li>
+          <li>A wearable tag fuses ranges, heading and motion on-device, so nothing depends on a network.</li>
+          <li>Guidance comes out as one prioritised sentence, fast enough to act on while walking.</li>
+        </ul>
+      </div>
+
+      <h2>Where it is</h2>
+      <div>
+        <p>
+          We secured an innovation grant to build the first units, pitched to more than fifteen
+          investors and partners, and kept the bill of materials lean so the product can stay
+          affordable. The company is still early — happy to talk through the technical or commercial
+          side directly.
+        </p>
+        <p class="fineprint">
+          What I own: company formation and finance, the full-stack platform (Express/Node, Next.js,
+          MySQL), hardware–software integration, and the investor narrative.
+        </p>
+      </div>
+
+      <h2>Contact</h2>
+      <div>
+        <p>
+          <a href={links.email} style="border-bottom:1px solid var(--line-strong)">{site.email}</a>
+        </p>
       </div>
     </div>
   </section>

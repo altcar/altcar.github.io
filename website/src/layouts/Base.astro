@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
 import { links, site } from '../data/site';
 
 interface Props {
@@ -13,8 +11,18 @@ interface Props {
 
 const { title = site.title, description = site.description, image = '/og.png', noindex = false } =
   Astro.props;
-const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const path = Astro.url.pathname;
+const canonical = new URL(path, site.url).href;
 const ogImage = new URL(image, site.url).href;
+
+const items = [
+  { href: '/work/', label: 'Projects' },
+  { href: '/meter/', label: 'METER' },
+  { href: '/meow/', label: 'Gallery' },
+];
+
+const isActive = (href: string) => path.startsWith(href);
 
 const person = {
   '@context': 'https://schema.org',
@@ -22,12 +30,10 @@ const person = {
   name: site.name,
   url: site.url,
   email: `mailto:${site.email}`,
-  jobTitle: 'Robotics and control systems engineer',
+  jobTitle: 'Robotics student, co-founder at METER',
   description,
   address: { '@type': 'PostalAddress', addressLocality: 'Bristol', addressCountry: 'GB' },
   sameAs: [links.github, links.linkedin],
-  worksFor: { '@type': 'Organization', name: 'METER' },
-  alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Bristol' },
 };
 ---
 
@@ -39,12 +45,11 @@ const person = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#06060a" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#fbfbf9" />
     {noindex && <meta name="robots" content="noindex" />}
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -63,65 +68,87 @@ const person = {
     <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" set:html={JSON.stringify(person)} />
-    <noscript>
-      <style>
-        .reveal {
-          opacity: 1 !important;
-          transform: none !important;
-          filter: none !important;
-        }
-      </style>
-    </noscript>
   </head>
 
   <body>
-    <div class="backdrop" aria-hidden="true">
-      <div class="backdrop__glow backdrop__glow--a"></div>
-      <div class="backdrop__glow backdrop__glow--b"></div>
-      <div class="backdrop__glow backdrop__glow--c"></div>
-      <div class="backdrop__grid"></div>
-    </div>
-
     <a class="skip" href="#main">Skip to content</a>
-    <div class="progress" aria-hidden="true"><span></span></div>
 
-    <Nav />
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="/">Shalev Lau <span>Bristol</span></a>
+
+        <nav class="nav" aria-label="Primary">
+          {
+            items.map((item) => (
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <div class="header-icons">
+          <a href={links.github} target="_blank" rel="me noopener" aria-label="GitHub">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+              />
+            </svg>
+          </a>
+          <a href={links.linkedin} target="_blank" rel="me noopener" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M3.6 1.6a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4ZM2.2 6.2h2.8V14H2.2V6.2Zm4.6 0h2.7v1.06h.04c.37-.7 1.28-1.44 2.64-1.44 2.82 0 3.34 1.86 3.34 4.27V14h-2.8v-3.47c0-.83-.01-1.9-1.15-1.9-1.16 0-1.34.9-1.34 1.84V14H6.8V6.2Z"
+              />
+            </svg>
+          </a>
+          <a href={links.email} aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+              <rect x="1.6" y="3.2" width="12.8" height="9.6" rx="1.6" />
+              <path d="m2.2 4.4 5.8 4.2 5.8-4.2" />
+            </svg>
+          </a>
+        </div>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M2 4h12M2 8h12M2 12h12" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-nav" id="mobile-nav" hidden>
+      {items.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a href={links.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a href={links.email}>Email</a>
+    </div>
 
     <main id="main">
       <slot />
     </main>
 
-    <Footer />
+    <footer class="footer">
+      <div class="wrap footer__inner">
+        <p>© {new Date().getFullYear()} Shalev Lau · {site.location}</p>
+        <div class="footer__links">
+          <a href={links.email}>Email</a>
+          <a href={links.github} target="_blank" rel="me noopener">GitHub</a>
+          <a href={links.linkedin} target="_blank" rel="me noopener">LinkedIn</a>
+          <a href={links.vcard} download>vCard</a>
+        </div>
+      </div>
+    </footer>
 
     <script>
-      const nav = document.querySelector<HTMLElement>('.nav');
-      const bar = document.querySelector<HTMLElement>('.progress span');
-      let ticking = false;
+      const header = document.querySelector<HTMLElement>('.site-header');
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const menu = document.getElementById('mobile-nav');
 
-      const onScroll = () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          ticking = false;
-          const y = window.scrollY;
-          const max = document.documentElement.scrollHeight - window.innerHeight;
-          if (bar) bar.style.setProperty('--p', max > 0 ? String(Math.min(y / max, 1)) : '0');
-          nav?.classList.toggle('is-stuck', y > 24);
-        });
-      };
-
+      const onScroll = () => header?.classList.toggle('is-stuck', window.scrollY > 8);
       addEventListener('scroll', onScroll, { passive: true });
       onScroll();
-
-      // ---- mobile menu -------------------------------------------------
-      const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
-      const menu = document.getElementById('mobile-menu');
-
-      const closeMenu = () => {
-        if (!toggle || !menu) return;
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.hidden = true;
-      };
 
       toggle?.addEventListener('click', () => {
         if (!menu) return;
@@ -131,141 +158,9 @@ const person = {
       });
 
       menu?.addEventListener('click', (event) => {
-        if ((event.target as HTMLElement).closest('a')) closeMenu();
-      });
-
-      addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeMenu();
-      });
-
-      // ---- scroll reveals ----------------------------------------------
-      const pending = new Set<HTMLElement>(document.querySelectorAll<HTMLElement>('.reveal'));
-
-      const revealVisible = () => {
-        if (pending.size === 0) return;
-        const limit = window.innerHeight * 0.94;
-        const hits: HTMLElement[] = [];
-        for (const el of pending) {
-          if (el.getBoundingClientRect().top < limit) hits.push(el);
-        }
-        for (const el of hits) {
-          el.classList.add('is-in');
-          pending.delete(el);
-        }
-      };
-
-      let revealFrame = 0;
-      const queueReveal = () => {
-        if (revealFrame) return;
-        revealFrame = requestAnimationFrame(() => {
-          revealFrame = 0;
-          revealVisible();
-        });
-      };
-
-      addEventListener('scroll', queueReveal, { passive: true });
-      addEventListener('resize', queueReveal, { passive: true });
-      revealVisible();
-      addEventListener('load', revealVisible);
-
-      // ---- pointer niceties (desktop only) -----------------------------
-      if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        document.querySelectorAll<HTMLElement>('.spotlight').forEach((el) => {
-          el.addEventListener('pointermove', (event) => {
-            const rect = el.getBoundingClientRect();
-            el.style.setProperty('--mx', `${event.clientX - rect.left}px`);
-            el.style.setProperty('--my', `${event.clientY - rect.top}px`);
-          });
-        });
-
-        const list = document.querySelector<HTMLElement>('[data-work-list]');
-        const preview = document.querySelector<HTMLElement>('.work-preview');
-        const previewImg = preview?.querySelector('img');
-
-        if (list && preview && previewImg) {
-          let frame = 0;
-          let px = innerWidth / 2;
-          let py = innerHeight / 2;
-
-          const paint = () => {
-            frame = 0;
-            preview.style.setProperty('--px', `${px}px`);
-            preview.style.setProperty('--py', `${py}px`);
-          };
-
-          list.addEventListener('pointerover', (event) => {
-            const item = (event.target as HTMLElement).closest<HTMLElement>('[data-image]');
-            if (!item?.dataset.image) return;
-            previewImg.src = item.dataset.image;
-            preview.classList.add('is-visible');
-          });
-
-          list.addEventListener('pointerout', (event) => {
-            const item = (event.target as HTMLElement).closest<HTMLElement>('[data-image]');
-            if (!item) return;
-            const next = event.relatedTarget as Node | null;
-            if (next && item.contains(next)) return;
-            preview.classList.remove('is-visible');
-          });
-
-          list.addEventListener('pointermove', (event) => {
-            px = event.clientX;
-            py = event.clientY;
-            if (!frame) frame = requestAnimationFrame(paint);
-          });
-        }
-
-        // subtle parallax on the hero name
-        const heroTitle = document.querySelector<HTMLElement>('[data-parallax]');
-        if (heroTitle && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          let heroFrame = 0;
-          addEventListener(
-            'scroll',
-            () => {
-              if (heroFrame) return;
-              heroFrame = requestAnimationFrame(() => {
-                heroFrame = 0;
-                const y = Math.min(window.scrollY, 700);
-                heroTitle.style.transform = `translate3d(0, ${y * 0.12}px, 0)`;
-                heroTitle.style.opacity = String(Math.max(1 - y / 620, 0.25));
-              });
-            },
-            { passive: true },
-          );
-        }
-      }
-
-      // ---- footer clock ------------------------------------------------
-      const clock = document.querySelector<HTMLElement>('[data-clock]');
-      if (clock) {
-        const format = new Intl.DateTimeFormat('en-GB', {
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZone: 'Europe/London',
-        });
-        const tick = () => {
-          clock.textContent = `Bristol ${format.format(new Date())}`;
-        };
-        tick();
-        setInterval(tick, 30_000);
-      }
-
-      // ---- copy email --------------------------------------------------
-      document.querySelectorAll<HTMLElement>('[data-copy]').forEach((button) => {
-        button.addEventListener('click', async () => {
-          const value = button.dataset.copy ?? '';
-          const label = button.querySelector('[data-copy-label]');
-          const original = label?.textContent ?? '';
-          try {
-            await navigator.clipboard.writeText(value);
-            if (label) label.textContent = 'Copied';
-          } catch {
-            if (label) label.textContent = value;
-          }
-          setTimeout(() => {
-            if (label) label.textContent = original;
-          }, 1800);
-        });
+        if (!(event.target as HTMLElement).closest('a')) return;
+        toggle?.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
       });
     </script>
   </body>

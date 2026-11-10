@@ -3,21 +3,14 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Not found — Shalev Lau" description="That page doesn't exist." noindex>
-  <section class="section" style="padding-top: calc(var(--nav-h) + 14vh); padding-bottom: 14vh">
-    <div class="wrap">
-      <p class="eyebrow reveal">404</p>
-      <h1 class="page-hero__title reveal" style="--d:1; margin-top:1rem">
-        This page <span class="serif">moved on.</span>
-      </h1>
-      <p class="page-hero__lede reveal" style="--d:2">
-        The link is broken, the file was renamed, or the thing was never here. The good stuff is a click
-        away.
-      </p>
-      <div class="hero__cta reveal" style="--d:3">
-        <a class="btn btn--primary" href="/">Back home <span class="btn__arrow">→</span></a>
-        <a class="btn" href="/work/">All projects</a>
-        <a class="btn" href="/meow/">Gallery</a>
-      </div>
+  <section class="page-head wrap" style="padding-bottom:12vh">
+    <p class="eyebrow">404</p>
+    <h1 style="margin-top:0.6rem">This page moved on.</h1>
+    <p>The link is broken, the file was renamed, or the thing was never here.</p>
+    <div style="display:flex;gap:16px;margin-top:1.5rem;font-size:13.5px">
+      <a href="/" style="border-bottom:1px solid var(--ink)">Home</a>
+      <a href="/work/" style="border-bottom:1px solid var(--line-strong)">Projects</a>
+      <a href="/meow/" style="border-bottom:1px solid var(--line-strong)">Gallery</a>
     </div>
   </section>
 </Base>

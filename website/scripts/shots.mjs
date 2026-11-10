@@ -16,28 +16,25 @@ for (const [route, name] of pages) {
     ['mobile', { width: 390, height: 844 }],
   ]) {
     const page = await browser.newPage({ viewport, deviceScaleFactor: 1 });
-    await page.goto(base + route, { waitUntil: 'networkidle' });
-    // walk down the page so lazy images and reveals all trigger
-    const height = await page.evaluate(() => document.body.scrollHeight);
-    for (let y = 0; y < height; y += Math.round(viewport.height * 0.7)) {
-      await page.evaluate((top) => window.scrollTo(0, top), y);
-      await page.waitForTimeout(120);
-    }
+    await page.goto(base + route, { waitUntil: 'load', timeout: 60000 });
+    await page.waitForTimeout(1200);
     await page.evaluate(async () => {
-      await Promise.all(
-        Array.from(document.images).map((img) => img.decode().catch(() => undefined)),
-      );
+      const height = document.body.scrollHeight;
+      for (let y = 0; y < height; y += window.innerHeight * 0.8) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 120));
+      }
+      window.scrollTo(0, 0);
     });
-    await page.waitForTimeout(700);
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(1200);
     await page.screenshot({
       path: `shots/${name}-${label}.png`,
       fullPage: label === 'desktop',
+      timeout: 30000,
     });
+    console.log('shot', name, label);
     await page.close();
   }
 }
 
 await browser.close();
-console.log('done');
