@@ -1,147 +1,213 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import { Image } from "astro:assets";
-import NavBar from "../components/NavBar.astro";
+import Base from '../layouts/Base.astro';
+import MeterVisual from '../components/MeterVisual.astro';
+import { links, site } from '../data/site';
+
+const pillars = [
+  {
+    title: 'UWB ranging',
+    body: 'Ultra-wideband radios measure time-of-flight between devices, so distance comes out to the centimetre — no camera, no line of sight, no light required.',
+  },
+  {
+    title: 'On-device fusion',
+    body: 'Ranges, heading and motion are fused locally into a live model of where the user is relative to the room. Nothing needs a round trip to the cloud to be useful.',
+  },
+  {
+    title: 'Spoken guidance',
+    body: 'The output is a short, prioritised sentence rather than a map: what is nearby, which way is clear, what is coming up. Fast enough to act on while walking.',
+  },
+];
+
+const steps = [
+  ['01', 'Anchors go in', 'Fixed UWB anchors are placed around the space and told where they are.'],
+  ['02', 'The tag ranges', 'A wearable tag measures distance to each anchor many times per second.'],
+  ['03', 'Fusion runs locally', 'Readings become position and heading on the device, so latency stays low and nothing leaves the user.'],
+  ['04', 'It says what matters', 'Guidance is spoken in plain language, prioritised by what is closest and most urgent.'],
+];
+
+const facts = [
+  ['Role', 'Co-founder & CFO'],
+  ['Founded', '2024'],
+  ['Based', 'Hong Kong · Bristol'],
+  ['Stage', 'Grant-funded · piloting'],
+];
 ---
 
-<Layout  title="METER">
-    <div class="w-full relative cover-bg">
-        <nav class="sticky top-0 text-end"> 
-          <NavBar></NavBar>
-           </nav>
+<Base
+  title="METER — assistive navigation with UWB | Shalev Lau"
+  description="METER is an assistive navigation company I co-founded: ultra-wideband positioning that tells a blind or low-vision user what is around them, in plain language."
+>
+  <section class="meter-hero wrap">
+    <div>
+      <nav class="crumbs reveal" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">METER</span>
+      </nav>
+      <h1 class="meter-wordmark reveal" style="--d:1; margin-top:0.6rem">METER</h1>
+      <p class="lede reveal" style="--d:2; margin-top:1.1rem">
+        Ultra-wideband navigation for people who cannot see the room they are walking into. I co-founded
+        METER in 2024 and lead the software side of the product.
+      </p>
 
-        
-        <div class="cover pt-0 w-full" transition:name="hero" transition:persist>
-<div class="mb-32 w-full">
-      <h1 class="w-full text-9xl text-center font-bold"> METER </h1>
-    <div class="ypadding my-[-16px]  mx-auto relative masthead__info__wrap">
-
-        <div class="px-[16px]">
-          <div class="masthead__info">
-            <div class="text-center">
-              <h5 class="text-lg leading-tight font-bold">My Role</h5>
-              <p class="text-xl leading-tight mt-1">UX Designer</p>
+      <dl class="meter-facts reveal" style="--d:3">
+        {
+          facts.map(([term, value]) => (
+            <div>
+              <dt>{term}</dt>
+              <dd>{value}</dd>
             </div>
-          </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="device-stage glass spotlight reveal" style="--d:2">
+      <MeterVisual />
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">01 — The problem</p>
+          <h2 class="h2">GPS stops at the front door.</h2>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p class="lede">
+            Indoors, a cane tells you what you have already touched, and a guide dog tells you what is
+            straight ahead. Neither tells you that the door is two metres to your left, or that the
+            corridor opens out after the next turn.
+          </p>
+          <p class="lede" style="margin-top:1rem">
+            So the question we designed around is the one people actually ask inside a building:
+            <em>what is around me, and which way is clear?</em> Answering it needs position good enough to
+            trust, and a description short enough to act on.
+          </p>
         </div>
 
-        <div class="px-[16px] relative ml-[8.33333333%]">
-            <div class="masthead__info">
-                <div class="text-center">
-                  <h5 class="text-lg leading-tight font-bold">Team</h5>
-                  <p class="text-xl leading-tight mt-1">Yara Digital Farming</p>
-                </div>
+        <aside class="fact-card glass spotlight reveal" style="--d:1">
+          <p class="fact-card__label">Why ultra-wideband</p>
+          <ul>
+            <li>Centimetre-level distance from time-of-flight</li>
+            <li>Works without light, cameras or a clear line of sight</li>
+            <li>Runs on a small battery, locally, with no data plan</li>
+            <li>Does not need to recognise faces or objects to be useful</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">02 — What we built</p>
+          <h2 class="h2">Three parts, one sentence.</h2>
+        </div>
+      </div>
+
+      <div class="pillars">
+        {
+          pillars.map((pillar, index) => (
+            <article class="pillar glass spotlight reveal" style={`--d:${index}`}>
+              <span class="pillar__num">{`0${index + 1}`}</span>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">03 — How it works</p>
+          <h2 class="h2">From radio to a spoken cue.</h2>
+        </div>
+      </div>
+
+      <div class="steps reveal">
+        {
+          steps.map(([n, title, body]) => (
+            <div class="step">
+              <span class="step__n">{n}</span>
+              <div>
+                <h3>{title}</h3>
+                <p>{body}</p>
               </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="eyebrow">04 — Where we are</p>
+          <h2 class="h2" style="margin-top:1rem">Grant-funded, pre-seed, piloting.</h2>
+          <p class="lede" style="margin-top:1.2rem">
+            METER started as a response to a social problem — indoor independence for blind and low-vision
+            people — and grew into a hardware and software company. We secured an innovation grant to build
+            the first units, pitched to more than fifteen investors and partners, and kept the bill of
+            materials lean so the product can be affordable.
+          </p>
+          <p class="muted" style="margin-top:1.2rem; font-size:0.9rem">
+            The company is still early. If you want the detailed version — technical or commercial — ask
+            me directly.
+          </p>
         </div>
 
-        <div class="px-[16px]  relative ml-[8.33333333%]">
-            <div class="masthead__info">
-                <div class="text-center">
-                  <h5 class="text-lg leading-tight font-bold">Project Type</h5>
-                  <p class="text-xl leading-tight mt-1">Mobile App</p>
-                </div>
-              </div>
-        </div>
+        <aside class="fact-card glass spotlight reveal" style="--d:1">
+          <p class="fact-card__label">What I own</p>
+          <ul>
+            <li>Co-founder: company formation, finance and grant reporting</li>
+            <li>Full-stack platform: Express/Node, Next.js, MySQL</li>
+            <li>Hardware and software integration across the UWB stack</li>
+            <li>Investor narrative, white papers and pitches</li>
+          </ul>
+          <div class="now__rule" aria-hidden="true"></div>
+          <p class="fact-card__label">Stack</p>
+          <ul class="tag-list" style="gap:0.4rem">
+            <li class="tag">UWB</li>
+            <li class="tag">Embedded C</li>
+            <li class="tag">Next.js</li>
+            <li class="tag">Node</li>
+            <li class="tag">MySQL</li>
+            <li class="tag">Lean manufacturing</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
 
-        <div class="px-[16px]  relative ml-[8.33333333%]">
-            <div class="masthead__info">
-                <div class="text-center">
-                  <h5 class="text-lg leading-tight font-bold">Website</h5>
-                  <a href=""><p class="text-xl leading-tight mt-1 underline">Visit</p></a>
-                </div>
-              </div>
-          </div>
+  <section class="section">
+    <div class="wrap">
+      <div class="contact glass spotlight reveal">
+        <p class="eyebrow">METER</p>
+        <h2 class="contact__title">
+          Accessibility hardware is <span class="serif">hard</span>. Worth it.
+        </h2>
+        <p class="lede">
+          Happy to talk about UWB, assistive product design, or what it takes to get a small hardware
+          company off the ground.
+        </p>
+        <div class="contact__row">
+          <a class="btn btn--primary" href={links.email}>{site.email} <span class="btn__arrow">↗</span></a>
+          <a class="btn" href="/work/">Back to projects</a>
         </div>
       </div>
     </div>
-</div>
-<div class="layout-content py-48 text-center">
-    <h2 class=" text-2xl font-bold">We bring hope to disable people</h2>
-</div>
-<div class="layout-content flex items-center justify-center bg-slate-200 py-24">
-    <div class="image-meter-wrapper w-[70%] my-auto">
-        <Image src="https://jamiephan.com/img/farmcare/fc-2.png" alt="A bird." width="2520" height="1080" />
-    </div>
-</div>
-<div class="layout-content py-48 flex items-center justify-center flex-col text-center">
-    <h2 class=" text-2xl font-semibold">Rewards</h2>
-    <p class="leading-normal text-lg my-12 w-[40%]">
-        Following the app’s recommendations may lead to good long-term results, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which farmers can complete specific activities to earn points and exchange them for coupons.
-    </p>
-</div>
-<div class="layout-content flex items-center justify-center bg-slate-200 py-24">
-    <div class="image-meter-wrapper w-[70%] my-auto">
-        <Image src="https://jamiephan.com/img/farmcare/fc-2.png" alt="A bird." width="2520" height="1080" />
-    </div>
-</div>
-<div class="top h-[500px]">
-    <div class="h-full mt-32">
-        <div class="w-full flex h-72">
-            <div class="bg-gray-900 w-full">
-                <a href="/">
-                <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">Home</h1>&lt;</div>
-            </a>
-            </div>    
-            <div class="bg-slate-800 w-full">
-            <a href="/meow">  
-                <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Explore</h1>&gt;</div>
-            </a>  
-            </div>    
-        </div>
-      <div class="w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
-      
-        <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
-      </div>
-
-  </div>
-    
-</div> 
-</Layout>
-<style>
-    .ypadding{
-        position: relative;
-        bottom: 0;
-        width: 100%;
-
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-content: flex-start;
-        justify-content: center;
-        align-items: center;
-    }
-    .ypadding > *{
-        display: inline-block;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-    .cover-bg{
-        background: url("../svg/farm.png") center center no-repeat;
-     
-    }
-    .cover{
-        
-        height: 100vh;
-        display: flex;
-        align-content: flex-end;
-        align-items: flex-end;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-
-.masthead__info__wrap {
-  margin-top: 13.75rem;
-}
-@media (max-width: 991px) {
- .masthead__info__wrap {
-    margin-top: 8.75rem;
-  }
-}
-@media (max-width: 575px) {
- .masthead__info__wrap {
-    margin-top: 4.5rem;
-  }
-}
-</style>
+  </section>
+</Base>

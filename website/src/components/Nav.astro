@@ -1,0 +1,59 @@
+---
+import { site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isHome = path === '/';
+
+const items = [
+  { href: '/#work', label: 'Work', match: isHome ? null : null },
+  { href: '/#about', label: 'About' },
+  { href: '/work/', label: 'Projects' },
+  { href: '/meter/', label: 'METER' },
+  { href: '/meow/', label: 'Gallery' },
+];
+
+const isActive = (href: string) => href.endsWith('/') && path.startsWith(href) && href !== '/';
+---
+
+<header class="nav-wrap">
+  <nav class="nav glass glass--soft" aria-label="Primary">
+    <a class="nav__brand" href="/" aria-label={`${site.name} — home`}>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.2" stroke="rgba(255,255,255,.45)" stroke-width="1.2" />
+        <circle cx="12" cy="12" r="3.1" fill="url(#navmark)" />
+        <ellipse cx="12" cy="12" rx="10.6" ry="4.3" stroke="rgba(155,140,255,.7)" stroke-width="1.1"
+          transform="rotate(-28 12 12)"></ellipse>
+        <defs>
+          <linearGradient id="navmark" x1="9" y1="9" x2="16" y2="16">
+            <stop stop-color="#fff"></stop>
+            <stop offset="1" stop-color="#9b8cff"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>Shalev Lau</span>
+    </a>
+
+    <ul class="nav__links">
+      {
+        items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="nav__cta" href="/#contact">Say hello</a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu">
+      <span aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-menu glass" id="mobile-menu" hidden>
+  {items.map((item) => <a href={item.href}>{item.label}</a>)}
+  <a href="/#contact">Say hello</a>
+</div>

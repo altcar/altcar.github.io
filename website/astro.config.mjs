@@ -1,11 +1,17 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
-import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
   site: 'https://shalev.eu.org',
-  // base: 'my-repo',
+  // Instant navigation: prefetch links as they enter the viewport.
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+  integrations: [sitemap()],
+  build: {
+    inlineStylesheets: 'auto',
+  },
 });

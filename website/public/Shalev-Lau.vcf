@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Shalev Lau
+N:Lau;Shalev;;;
+TITLE:Robotics & Control Systems Engineer
+ORG:METER
+item1.EMAIL;TYPE=INTERNET:connecti@shalev.eu.org
+item1.X-ABLabel:Email
+item2.TEL:+44 7832 696972
+item2.X-ABLabel:WhatsApp
+item3.URL:https://shalev.eu.org
+item3.X-ABLabel:Website
+item4.URL:https://github.com/altcar
+item4.X-ABLabel:GitHub
+item5.URL:https://www.linkedin.com/in/shalevl/
+item5.X-ABLabel:LinkedIn
+END:VCARD

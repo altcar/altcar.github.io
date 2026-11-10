@@ -1,140 +1,310 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import HeroGallery from "../components/HeroGallery.astro";
+import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import { links, marquee, projects, experience, skills, site } from '../data/site';
+import { photos } from '../data/photos';
 
-import "../styles/new.css";
-import Card from "../components/Card.astro";
-import NavBar from "../components/NavBar.astro";
-
-
-
-import WordCloud from "../components/WordCloud.astro";
-const heatmapJson = {
-  Embedded: 9,
-  "System Control ": 15,
-  "business \n analysis": 5,
-  "matlab": 12,
-  data: 7,
-  java: 3,
-  python: 10,
-  // Add more as your list grows...
-};
-const projects = [
-  {
-    title: "Emerge Start-up",
-    body: "Support entrepreneurs in building their MVPs",
-    href: "/",
-    picurl: "/proj/emer.jpeg"
-  },
-  {
-    title: "Charity Event",
-    body: "Raised over $300 for local charities",
-    href: "/",
-    picurl: "/proj/RAG.jpg"
-  },
-  {
-    title: "VapeDrop",
-    body: "change the afterlives of disposable vapes",
-    href: "/",
-    picurl: "/proj/vapedrop.jpg"
-  },
-  {
-    title: "Satellite Comp.",
-    body: "Achieveing Best Innovation Award nationally",
-    href: "/",
-    picurl: "/proj/ukseds.jpeg"
-  },
-  {
-    title: "VapeDrop",
-    body: "change the afterlives of disposable vapes",
-    href: "/",
-    picurl: "/proj/vapedrop.jpg"
-  },
-  {
-    title: "Satellite Comp.",
-    body: "Achieveing Best Innovation Award nationally",
-    href: "/",
-    picurl: "/proj/ukseds.jpeg"
-  }
-];
+const featured = projects.filter((project) => project.featured);
+const teaser = photos.slice(0, 3);
 ---
 
-<Layout title="Shalev Lau - System Control Engineer">
-         <nav class="sticky text-end" style="z-index: 1000;" id="about123"> 
-          <NavBar></NavBar>
-         </nav>
-   <HeroGallery /> <!-- client:load for hydration -->
-  <!-- <div class="top h-[100vh]">
-    <div class="cover h-full">
-         <nav class="sticky top-0 text-end"> 
-          <NavBar></NavBar>
-         </nav>
-         <div class="cover-content h-full flex justify-center flex-col ml-5">
-           <h1 class="mastheadtitle"><pre class="block !text-xl ml-5">Hey. </pre>I'm Shalev <br/> Engineer Consultant</h1> 
-         <div class="mt-9 pb-36">
-          <a href="/#takealook"><button class="rounded-full py-3 px-6 border-solid border-2">Take a look</button></a>
-          <a href="/#contactme"><button class="rounded-full py-3 px-6 border-solid border-2">Get in Touch</button></a>
-         </div>
-         </div>
-   
-    </div>
-  </div> -->
-  <div class="" id="takealook"></div>
-  <div class="flex py-24 justify-center items-center bg-slate-200 flex-col">
-    <h5 class="text-black"><div class="text-xl inline">What</div>    &emsp; do I do?</h5>
-    <h2 class="sectionHeading block">  <WordCloud data={heatmapJson} /></h2>
-  </div>
-  <div id="thisisindexproject"></div>
-  <div class="">
-    <nav class="sticky top-0 text-end"> 
-      <NavBar></NavBar>
-     </nav>
-     <div class="flex flex-col lg:hidden align-middle justify-center items-center  ">
-      <h2 class="ml-5 py-12 text-3xl">A peek on what I worked on</h2>
-           {projects.map((project) => (
-   
-        <Card title={project.title} body={project.body} href={project.href} picurl={project.picurl} />
+<Base title="Shalev Lau — Robotics & control systems" description={site.description}>
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div>
+        <p class="hero__eyebrow reveal">
+          <span class="chip"><span class="status-dot"></span> Open to hard problems</span>
+          <span class="dot-sep" aria-hidden="true"></span>
+          <span>Bristol, UK</span>
+          <span class="dot-sep" aria-hidden="true"></span>
+          <span>Robotics · Control · Software</span>
+        </p>
 
-    ))}
-       
-     </div>
-     <div class="hidden lg:flex pt-32 pb-56 justify-center items-center  flex-col">
-      <h2 class="pb-12 text-3xl">A peek on what I worked on</h2>
-      <table>
-      {projects.reduce((rows: any[], project: { title: string; body: string | undefined; href: string; picurl: string; }, index) => {
-    if (index % 2 === 0) {
-      rows.push([]);
-    }
-    rows[rows.length - 1].push(project);
-    return rows;
-  }, []).map((row) => (
-    <tr>
-      {row.map((project: { title: string; body: string | undefined; href: string; picurl: string; }) => (
-        <td>
-          <Card title={project.title} body={project.body} href={project.href} picurl={project.picurl} />
-        </td>
-      ))}
-    </tr>
-  ))}
-</table>
+        <h1 class="hero__title reveal" style="--d:1" data-parallax>
+          Shalev <span class="serif">Lau</span>
+        </h1>
+
+        <p class="hero__lede reveal" style="--d:2">
+          I build systems that <em>sense, decide and move</em> — control loops, embedded firmware, and
+          the software that makes them useful. Co-founder at <a href="/meter/">METER</a>, building
+          ultra-wideband navigation for blind and low-vision people, with research and projects at the
+          Bristol Robotics Laboratory.
+        </p>
+
+        <div class="hero__cta reveal" style="--d:3">
+          <a class="btn btn--primary" href="#work">Selected work <span class="btn__arrow">↘</span></a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+
+        <ul class="hero__chips reveal" style="--d:4">
+          <li class="chip">Embedded C/C++</li>
+          <li class="chip">MATLAB / Simulink</li>
+          <li class="chip">TypeScript on Workers</li>
+          <li class="chip">Python / PyTorch</li>
+        </ul>
+      </div>
+
+      <aside class="now glass spotlight reveal" style="--d:3" aria-label="Right now">
+        <div class="now__row">
+          <p class="now__label"><span class="status-dot"></span> Now</p>
+          <p class="now__value">
+            Co-founder &amp; CFO at <a href="/meter/">METER</a> — UWB navigation aids for blind and
+            low-vision users.
+          </p>
+        </div>
+        <div class="now__rule" aria-hidden="true"></div>
+        <div class="now__row">
+          <p class="now__label">Research</p>
+          <p class="now__value">
+            Robotics projects at the Bristol Robotics Laboratory, University of Bristol.
+          </p>
+        </div>
+        <div class="now__rule" aria-hidden="true"></div>
+        <div class="now__row">
+          <p class="now__label">Elsewhere</p>
+          <p class="now__value">
+            <a href={links.github} target="_blank" rel="me noopener">GitHub</a><span class="muted"> · </span><a
+              href={links.linkedin}
+              target="_blank"
+              rel="me noopener">LinkedIn</a
+            ><span class="muted"> · </span><a href={links.email}>Email</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true"><i></i> Scroll</div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      {marquee.map((item) => <span class="marquee__item">{item}</span>)}
+    </div>
+    <div class="marquee__track">
+      {marquee.map((item) => <span class="marquee__item">{item}</span>)}
     </div>
   </div>
-  
-  <div class="" id="contactme"></div>
-  <div class="top h-[500px]">
-    
-    <div class="cover h-full">
-     
-      <div class="cover-content h-full max-md:w-full max-md:ml-5 w-[50%] flex justify-center items-start flex-col mx-auto">
-        <h5 class="pb-8" id="contact">Let's connect</h5>
-        <a href="/pic/Shalev-whatsapp-preferred.vcf" download><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Save as contact (.vCard)</h2></a>
-        <a href="https://www.linkedin.com/in/shalevl/"><h2 class="sectionHeading block my-2 hover:underline hover:cursor-pointer">Linkedin</h2></a>
-        <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">01 — Selected work</p>
+          <h2 class="h2">Things I built, shipped, or broke on purpose.</h2>
+        </div>
+        <a class="link-arrow" href="/work/">
+          All projects
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
       </div>
-      <nav class="sticky bottom-0 text-end"> 
-        <NavBar></NavBar>
-       </nav>
-  </div>
-    
-</div> 
-</Layout>
+
+      <div class="work-list" data-work-list>
+        {
+          featured.map((project, index) => {
+            const href = project.detail ?? project.href ?? '#';
+            const isExternal = Boolean(project.href && !project.detail);
+            return (
+              <a
+                class="work-item reveal"
+                style={`--d:${index}`}
+                href={href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener' : undefined}
+                data-image={project.image}
+              >
+                <span class="work-item__index">{String(index + 1).padStart(2, '0')}</span>
+                <span class="work-item__body">
+                  <span class="work-item__title">
+                    {project.title}
+                    <small>{project.kicker}</small>
+                  </span>
+                  <span class="work-item__blurb">{project.blurb}</span>
+                </span>
+                <span class="work-item__meta">
+                  <span class="work-item__tags">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </span>
+                </span>
+                <span class="work-item__arrow" aria-hidden="true">{isExternal ? '↗' : '→'}</span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p class="eyebrow">02 — About</p>
+          <h2 class="h2" style="margin-top:1rem">
+            Control engineer by training, <span class="serif">product engineer</span> by habit.
+          </h2>
+          <div style="margin-top:1.6rem">
+            <p class="lede">
+              Most of my work sits where a control loop meets a real person. At METER that means turning
+              a wall of ultra-wideband distances into a sentence someone can trust while walking down a
+              street — hardware, firmware and interface, judged only by whether it helps.
+            </p>
+            <p class="lede" style="margin-top:1rem">
+              I study robotics at the University of Bristol and work on research and projects at the
+              <a href="https://www.bristolroboticslab.com/" target="_blank" rel="noopener">Bristol Robotics Laboratory</a>
+              — the UK's largest multi-disciplinary robotics lab. Between that and a drawer of side projects,
+              I've taken things from a breadboard to a taped-out chip, and from a spreadsheet to a service
+              running in production.
+            </p>
+            <p class="lede" style="margin-top:1rem">
+              I care about systems that survive contact with reality: fast, quiet, boringly reliable, and
+              documented well enough that the next person can move.
+            </p>
+          </div>
+        </div>
+
+        <aside class="fact-card glass spotlight reveal" style="--d:1">
+          <div>
+            <p class="fact-card__label">Education</p>
+            <p class="fact-card__value">
+              <strong>Robotics</strong><br />University of Bristol<br />
+              <span class="muted">Research &amp; projects at BRL</span>
+            </p>
+          </div>
+          <div class="now__rule" aria-hidden="true"></div>
+          <div>
+            <p class="fact-card__label">Selected recognition</p>
+            <ul>
+              <li>Best Innovation Award, UKSEDS satellite competition</li>
+              <li>Innovation grant, METER</li>
+              <li>Best Marketing Award, South East England</li>
+              <li>Duke of Edinburgh Gold Award</li>
+            </ul>
+          </div>
+          <div class="now__rule" aria-hidden="true"></div>
+          <div>
+            <p class="fact-card__label">Languages</p>
+            <p class="fact-card__value">English · Chinese — professional working proficiency</p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="card-grid" style="margin-top:clamp(1.5rem,4vw,2.75rem)">
+        {
+          skills.map((group, index) => (
+            <article class="card glass spotlight reveal" style={`--d:${index}`}>
+              <div class="card__top">
+                <span class="card__kicker">{`0${index + 1}`} — Toolkit</span>
+              </div>
+              <h3 class="card__title">{group.label}</h3>
+              <ul class="tag-list">
+                {group.items.map((item) => (
+                  <li class="tag">{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="experience">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">03 — Experience</p>
+          <h2 class="h2">A short history of shipping.</h2>
+        </div>
+      </div>
+
+      <div class="timeline">
+        {
+          experience.map((job, index) => (
+            <div class="tl reveal" style={`--d:${index}`}>
+              <span class="tl__when">{job.when}</span>
+              <span>
+                <span class="tl__role">{job.role}</span>
+                <span class="tl__org" style="display:block">{job.org}</span>
+              </span>
+              <p class="tl__note">{job.note}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__title">
+          <p class="eyebrow">04 — Field notes</p>
+          <h2 class="h2">Off the clock, still outside.</h2>
+        </div>
+        <a class="link-arrow" href="/meow/">
+          Open gallery
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="teaser">
+        {
+          teaser.map((photo, index) => (
+            <a class="shot reveal" style={`--d:${index}`} href="/meow/">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                widths={[420, 760]}
+                sizes="(max-width: 760px) 92vw, 33vw"
+                format="webp"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="shot__cap">
+                <span>{photo.place}</span>
+                <span>{photo.note}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact glass spotlight reveal">
+        <p class="eyebrow">05 — Contact</p>
+        <h2 class="contact__title">
+          Have something that needs <span class="serif">to work</span>?
+        </h2>
+        <p class="lede">
+          I'm always up for a conversation about control, embedded systems, or a product that should
+          exist. The fastest route is email — I usually reply the same day.
+        </p>
+        <div class="contact__row">
+          <a class="btn btn--primary" href={links.email}>
+            {site.email}
+            <span class="btn__arrow">↗</span>
+          </a>
+          <button class="btn" type="button" data-copy={site.email}>
+            <span data-copy-label>Copy email</span>
+          </button>
+          <a class="btn" href={links.vcard} download>Save contact</a>
+        </div>
+        <div class="contact__links">
+          <a href={links.github} target="_blank" rel="me noopener">GitHub ↗</a>
+          <a href={links.linkedin} target="_blank" rel="me noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="work-preview" aria-hidden="true"><img alt="" /></div>
+</Base>

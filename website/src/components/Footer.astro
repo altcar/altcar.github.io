@@ -1,0 +1,20 @@
+---
+import { links, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div>
+      <p>© {year} {site.name} · {site.location}</p>
+    </div>
+    <div class="footer__meta">
+      <span class="footer__clock" data-clock>Bristol</span>
+      <a href={links.github} target="_blank" rel="me noopener">GitHub</a>
+      <a href={links.linkedin} target="_blank" rel="me noopener">LinkedIn</a>
+      <a href="/Shalev-Lau.vcf" download>vCard</a>
+      <span>Built with Astro · on Cloudflare Workers</span>
+    </div>
+  </div>
+</footer>

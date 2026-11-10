@@ -1,0 +1,272 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { links, site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title = site.title, description = site.description, image = '/og.png', noindex = false } =
+  Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image, site.url).href;
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Robotics and control systems engineer',
+  description,
+  address: { '@type': 'PostalAddress', addressLocality: 'Bristol', addressCountry: 'GB' },
+  sameAs: [links.github, links.linkedin],
+  worksFor: { '@type': 'Organization', name: 'METER' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Bristol' },
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#06060a" />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+    <noscript>
+      <style>
+        .reveal {
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
+        }
+      </style>
+    </noscript>
+  </head>
+
+  <body>
+    <div class="backdrop" aria-hidden="true">
+      <div class="backdrop__glow backdrop__glow--a"></div>
+      <div class="backdrop__glow backdrop__glow--b"></div>
+      <div class="backdrop__glow backdrop__glow--c"></div>
+      <div class="backdrop__grid"></div>
+    </div>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="progress" aria-hidden="true"><span></span></div>
+
+    <Nav />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      const nav = document.querySelector<HTMLElement>('.nav');
+      const bar = document.querySelector<HTMLElement>('.progress span');
+      let ticking = false;
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          const y = window.scrollY;
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          if (bar) bar.style.setProperty('--p', max > 0 ? String(Math.min(y / max, 1)) : '0');
+          nav?.classList.toggle('is-stuck', y > 24);
+        });
+      };
+
+      addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // ---- mobile menu -------------------------------------------------
+      const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+      const menu = document.getElementById('mobile-menu');
+
+      const closeMenu = () => {
+        if (!toggle || !menu) return;
+        toggle.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+      };
+
+      toggle?.addEventListener('click', () => {
+        if (!menu) return;
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        menu.hidden = open;
+      });
+
+      menu?.addEventListener('click', (event) => {
+        if ((event.target as HTMLElement).closest('a')) closeMenu();
+      });
+
+      addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+      });
+
+      // ---- scroll reveals ----------------------------------------------
+      const pending = new Set<HTMLElement>(document.querySelectorAll<HTMLElement>('.reveal'));
+
+      const revealVisible = () => {
+        if (pending.size === 0) return;
+        const limit = window.innerHeight * 0.94;
+        const hits: HTMLElement[] = [];
+        for (const el of pending) {
+          if (el.getBoundingClientRect().top < limit) hits.push(el);
+        }
+        for (const el of hits) {
+          el.classList.add('is-in');
+          pending.delete(el);
+        }
+      };
+
+      let revealFrame = 0;
+      const queueReveal = () => {
+        if (revealFrame) return;
+        revealFrame = requestAnimationFrame(() => {
+          revealFrame = 0;
+          revealVisible();
+        });
+      };
+
+      addEventListener('scroll', queueReveal, { passive: true });
+      addEventListener('resize', queueReveal, { passive: true });
+      revealVisible();
+      addEventListener('load', revealVisible);
+
+      // ---- pointer niceties (desktop only) -----------------------------
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.querySelectorAll<HTMLElement>('.spotlight').forEach((el) => {
+          el.addEventListener('pointermove', (event) => {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            el.style.setProperty('--my', `${event.clientY - rect.top}px`);
+          });
+        });
+
+        const list = document.querySelector<HTMLElement>('[data-work-list]');
+        const preview = document.querySelector<HTMLElement>('.work-preview');
+        const previewImg = preview?.querySelector('img');
+
+        if (list && preview && previewImg) {
+          let frame = 0;
+          let px = innerWidth / 2;
+          let py = innerHeight / 2;
+
+          const paint = () => {
+            frame = 0;
+            preview.style.setProperty('--px', `${px}px`);
+            preview.style.setProperty('--py', `${py}px`);
+          };
+
+          list.addEventListener('pointerover', (event) => {
+            const item = (event.target as HTMLElement).closest<HTMLElement>('[data-image]');
+            if (!item?.dataset.image) return;
+            previewImg.src = item.dataset.image;
+            preview.classList.add('is-visible');
+          });
+
+          list.addEventListener('pointerout', (event) => {
+            const item = (event.target as HTMLElement).closest<HTMLElement>('[data-image]');
+            if (!item) return;
+            const next = event.relatedTarget as Node | null;
+            if (next && item.contains(next)) return;
+            preview.classList.remove('is-visible');
+          });
+
+          list.addEventListener('pointermove', (event) => {
+            px = event.clientX;
+            py = event.clientY;
+            if (!frame) frame = requestAnimationFrame(paint);
+          });
+        }
+
+        // subtle parallax on the hero name
+        const heroTitle = document.querySelector<HTMLElement>('[data-parallax]');
+        if (heroTitle && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          let heroFrame = 0;
+          addEventListener(
+            'scroll',
+            () => {
+              if (heroFrame) return;
+              heroFrame = requestAnimationFrame(() => {
+                heroFrame = 0;
+                const y = Math.min(window.scrollY, 700);
+                heroTitle.style.transform = `translate3d(0, ${y * 0.12}px, 0)`;
+                heroTitle.style.opacity = String(Math.max(1 - y / 620, 0.25));
+              });
+            },
+            { passive: true },
+          );
+        }
+      }
+
+      // ---- footer clock ------------------------------------------------
+      const clock = document.querySelector<HTMLElement>('[data-clock]');
+      if (clock) {
+        const format = new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'Europe/London',
+        });
+        const tick = () => {
+          clock.textContent = `Bristol ${format.format(new Date())}`;
+        };
+        tick();
+        setInterval(tick, 30_000);
+      }
+
+      // ---- copy email --------------------------------------------------
+      document.querySelectorAll<HTMLElement>('[data-copy]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const value = button.dataset.copy ?? '';
+          const label = button.querySelector('[data-copy-label]');
+          const original = label?.textContent ?? '';
+          try {
+            await navigator.clipboard.writeText(value);
+            if (label) label.textContent = 'Copied';
+          } catch {
+            if (label) label.textContent = value;
+          }
+          setTimeout(() => {
+            if (label) label.textContent = original;
+          }, 1800);
+        });
+      });
+    </script>
+  </body>
+</html>

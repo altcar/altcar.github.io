@@ -1,152 +1,105 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import { Image } from "astro:assets";
-import Card from "../components/PhotoCard.astro";
-import NavBar from "../components/NavBar.astro";
+import Base from '../layouts/Base.astro';
+import { Image, getImage } from 'astro:assets';
+import { photos } from '../data/photos';
 
-
-
-const hikes = [
-  {
-    title: "Lizard",
-    body: "Cornwall",
-    href: "#new1",
-    picurl: "/hike/hike.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Bristol",
-    body: "Cabot Tower",
-    href: "#new1",
-    picurl: "/hike/hike2.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Bristol",
-    body: "Harbourside",
-    href: "#new1",
-    picurl: "/hike/hike3.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Exeter",
-    body: "Sunrise",
-    href: "#new1",
-    picurl: "/hike/hike4.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Bristol",
-    body: "Cabot Tower",
-    href: "#new1",
-    picurl: "/hike/hike5.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Bristol",
-    body: "Suspension Bridge",
-    href: "#new1",
-    picurl: "/hike/hike6.jpg",
-    date: "2025-10-15 23:59"
-  },{
-    title: "Bristol",
-    body: "Cabot Tower",
-    href: "#new1",
-    picurl: "/hike/hike7.jpg",
-    date: "2025-10-15 23:59"
-  },
-  
-];
+const shots = await Promise.all(
+  photos.map(async (photo, index) => ({
+    ...photo,
+    index,
+    full: await getImage({ src: photo.src, width: 1800, format: 'webp', quality: 82 }),
+  })),
+);
 ---
 
-<Layout title="my adventure">
-
-    <div class="w-full relative cover-bg h-[70vh]">
-        <nav class="sticky top-0 text-end"> 
-         <NavBar></NavBar>
-        </nav>
-
-        <div class="flex flex-end h-full">
-        <div class="layout-content mt-12 flex items-center mb-32 justify-end flex-col text-center">
-            <h2 class=" text-5xl font-semibold">Rewards</h2>
-            <p class="leading-normal text-md my-12 w-[40%]">
-               Following the app’s recommendations may lead to rewarding hikes and lasting outdoor adventures, but users are also incentivized by immediate benefits. To keep them engaged and increase their overall satisfaction, we’ve designed a reward program in which hikers can complete specific trails or challenges to earn points and exchange them for gear discounts or exclusive trail perks.   </p>
-        </div></div>
+<Base
+  title="Field notes — Shalev Lau"
+  description="Photos from walks around Bristol, Cornwall and Exeter: the Lizard, Cabot Tower, the harbourside and Clifton Suspension Bridge."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow reveal">Field notes</p>
+      <h1 class="page-hero__title reveal" style="--d:1">
+        Out of the lab,<br /><span class="serif">into the hills.</span>
+      </h1>
+      <p class="page-hero__lede reveal" style="--d:2">
+        Photos from walks around Bristol and the West Country. Same instinct as the engineering: look
+        closely, notice what changed, keep the map honest.
+      </p>
     </div>
+  </section>
 
-        <div class="flex flex-col items-center my-16">
-            <div class="flex flex-row items-center w-fit p-5 bg-slate-500">
-                <Image src="/hike/bike.jpg" alt="A bird." width="300" height="200" />
-                <div class="flex flex-col items-center w-fit pl-16  ">
-                    <h2 class="mb-8 text-3xl font-bold">Rayleigh Gritstone 500</h2>
-                    <div class="flex flex-wrap flex-row">
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
-                            <h2 class="text-2xl">10y</h2>
-                            <h2>Age</h2>
-                        </div>
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
-                            <h2 class="text-2xl">12kg</h2>
-                            <h2>Weight</h2>
-                        </div>
-                        <div class="flex flex-col justify-center items-center py-5 px-9 bg-slate-950 rounded-sm mx-5">
-                            <h2 class="text-2xl">5</h2>
-                            <h2>Owner</h2>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-
-
-    <hr>
-    <div class="flex flex-col items-center bg-slate-200 py-16">
-        <div class="photos-container grid grid-cols-2 gap-3 w-fit">
-               {hikes.map((hike) => (
-        <Card title={hike.title} body={hike.body} href={hike.href} picurl={hike.picurl} date={hike.date} />
-    ))}
-        </div>
-    </div>
-    <div class="top h-[500px]">
-        <div class="h-full mt-32">
-            <div class="w-full flex h-72">
-                <div class="bg-gray-900 w-full">
-                    <a href="/meter">
-                    <div class="p-12 !px-24"> <h1 class="text-3xl mb-12">METER</h1>&lt;</div>
-                </a>
-                </div>    
-                <div class="bg-slate-800 w-full">
-                <a href="/">  
-                    <div class="p-12 text-end !px-24"> <h1 class="text-3xl mb-12">Home</h1>&gt;</div>
-                </a>  
-                </div>    
-            </div>  
-          <div class="w-full  md:w-[50%] flex justify-center items-start flex-col mx-auto">
-          
-            <h6 class="pt-24">@ 2024, Designed by Shalev, Inspired by Jamie Phan.</h6>
-          </div>
-    
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="gallery">
+        {
+          shots.map((shot) => (
+            <button
+              class="shot reveal"
+              type="button"
+              data-full={shot.full.src}
+              data-alt={shot.alt}
+              data-caption={`${shot.place} · ${shot.note}`}
+              aria-label={`Open photo: ${shot.place}, ${shot.note}`}
+            >
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                widths={[400, 700, 1000]}
+                sizes="(max-width: 760px) 92vw, (max-width: 1200px) 45vw, 30vw"
+                format="webp"
+                loading={shot.index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              <span class="shot__cap">
+                <span>{shot.place}</span>
+                <span>{shot.note}</span>
+              </span>
+            </button>
+          ))
+        }
       </div>
-        
-    </div> 
-</Layout>
+    </div>
+  </section>
 
-<style>
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="contact glass spotlight reveal">
+        <p class="eyebrow">Next</p>
+        <h2 class="contact__title">See the <span class="serif">work</span> instead.</h2>
+        <div class="contact__row">
+          <a class="btn btn--primary" href="/work/">All projects <span class="btn__arrow">→</span></a>
+          <a class="btn" href="/meter/">METER</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+    <button class="lightbox__close" type="button" aria-label="Close">×</button>
+    <img alt="" />
+    <p class="lightbox__cap"></p>
+  </dialog>
+</Base>
 
-.cover-bg{
-        background: url("../hike/hike2.jpg")
-     no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
-    .cover{
-        
-        height: 100vh;
-        display: flex;
-        align-content: flex-end;
-        align-items: flex-end;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = dialog?.querySelector('img');
+  const cap = dialog?.querySelector('.lightbox__cap');
+  const close = dialog?.querySelector('.lightbox__close');
 
-</style>
+  document.querySelectorAll<HTMLElement>('.shot[data-full]').forEach((shot) => {
+    shot.addEventListener('click', () => {
+      if (!dialog || !img || !cap) return;
+      img.src = shot.dataset.full ?? '';
+      img.alt = shot.dataset.alt ?? '';
+      cap.textContent = shot.dataset.caption ?? '';
+      dialog.showModal();
+    });
+  });
+
+  close?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>
