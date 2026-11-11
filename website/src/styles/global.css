@@ -849,21 +849,17 @@ button {
 }
 
 .cards {
-  --stack-x: clamp(16px, 2.1vw, 34px);
-  --stack-y: clamp(7px, 0.8vw, 13px);
-  position: relative;
   display: grid;
-  place-items: center;
-  min-height: clamp(600px, 56vw, 800px);
-  padding-block: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 18px) 0;
+  padding-block: clamp(18px, 2.4vw, 34px);
 }
 
 .card {
-  grid-area: 1 / 1;
-  width: min(470px, 100%);
   position: relative;
   display: flex;
   flex-direction: column;
+  margin-inline: -7px;
   padding: 10px;
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -871,13 +867,8 @@ button {
   box-shadow: var(--shadow-card);
   transform-origin: 50% 60%;
   z-index: var(--z, 1);
-  /* pre-stacked: cards start fanned behind one another, then drag apart */
-  transform: translate3d(
-      calc(var(--t, 0) * var(--stack-x)),
-      calc(var(--t, 0) * var(--stack-y) * -1),
-      0
-    )
-    rotate(calc(var(--t, 0) * 1.5deg));
+  /* pre-stacked: hand-placed tilt, so the grid reads as a pile of prints */
+  transform: translate3d(0, var(--dy, 0px), 0) rotate(var(--rot, 0deg));
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1674,6 +1665,10 @@ button {
     columns: 2;
   }
 
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .feature {
     grid-template-columns: minmax(0, 1fr);
     min-height: 0;
@@ -1687,6 +1682,10 @@ button {
 @media (max-width: 780px) {
   .cards {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    margin-inline: 0;
   }
 }
 
@@ -1760,17 +1759,15 @@ button {
     display: none;
   }
 
-  /* no pointer means no dragging, so the deck must not hide projects */
+  /* no pointer means no dragging, so the cards sit flat and in one column */
   .cards {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
-    min-height: 0;
     padding-block: 0;
   }
 
   .card {
-    grid-area: auto;
-    width: auto;
+    margin-inline: 0;
     transform: none;
   }
 }

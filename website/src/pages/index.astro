@@ -119,18 +119,18 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         {
           [railPhotos, [...railPhotos.slice(3), ...railPhotos.slice(0, 3)]].map((row) => (
             <div class="rail__row">
-              {[0, 1].map((copy) => (
-                <div class="rail__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {[0, 1, 2].map((copy) => (
+                <div class="rail__group" aria-hidden={copy === 1 ? undefined : 'true'}>
                   {row.map((photo) => (
                     <a
                       class="rail__item"
                       href="/meow/"
-                      aria-label={copy === 0 ? `${photo.place}, ${photo.note}` : undefined}
-                      tabindex={copy === 1 ? -1 : undefined}
+                      aria-label={copy === 1 ? `${photo.place}, ${photo.note}` : undefined}
+                      tabindex={copy === 1 ? undefined : -1}
                     >
                       <Image
                         src={photo.src}
-                        alt={copy === 0 ? photo.alt : ''}
+                        alt={copy === 1 ? photo.alt : ''}
                         widths={[380, 640]}
                         sizes="(max-width: 720px) 52vw, 23vw"
                         format="webp"
@@ -200,7 +200,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
           <article
             class="card"
             data-drag
-            style={`--i:${index};--t:${index - (cards.length - 1) / 2};--z:${cards.length - index};--ambient:${info.ambient}`}
+            style={`--i:${index};--rot:${[-1.8, 1.4, -0.9, 1.6, -1.3, 1.0][index % 6]}deg;--dy:${[6, -8, 3, -4, 7, -3][index % 6]}px;--z:${index + 1};--ambient:${info.ambient}`}
           >
             <a
               class="card__media"
@@ -261,18 +261,27 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
   const rail = document.querySelector<HTMLElement>('[data-rail]');
 
   if (rail) {
-    // Half the track is one full set — the second copy exists purely to make the loop seamless.
-    const setWidth = () => rail.scrollWidth / 2;
+    // Three copies of the set; the middle one is where the rail starts, so
+    // there is a full set to the left and to the right — it loops both ways.
+    const setWidth = () => rail.scrollWidth / 3;
+
+    const centre = () => {
+      const width = setWidth();
+      // +1 avoids the wrap firing on the subpixel rounding of the assignment
+      if (width > 0) rail.scrollLeft = width + 1;
+    };
+
+    centre();
+    addEventListener('resize', centre);
 
     const wrap = () => {
       const width = setWidth();
       if (width < 1) return;
-      if (rail.scrollLeft >= width) rail.scrollLeft -= width;
-      else if (rail.scrollLeft < 0) rail.scrollLeft += width;
+      if (rail.scrollLeft >= width * 2) rail.scrollLeft -= width;
+      else if (rail.scrollLeft < width) rail.scrollLeft += width;
     };
 
     rail.addEventListener('scroll', wrap, { passive: true });
-    addEventListener('resize', wrap);
 
     let down = false;
     let dragged = false;
@@ -298,13 +307,13 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
       if (!dragged && Math.abs(dx) > 4) dragged = true;
       rail.scrollLeft = startLeft - dx;
 
-      // Keep the drag continuous across the seam by shifting the anchor too.
+      // Keep the drag continuous across the seams by shifting the anchor too.
       const width = setWidth();
       if (width > 0) {
-        if (rail.scrollLeft >= width) {
+        if (rail.scrollLeft >= width * 2) {
           rail.scrollLeft -= width;
           startLeft -= width;
-        } else if (rail.scrollLeft < 0) {
+        } else if (rail.scrollLeft < width) {
           rail.scrollLeft += width;
           startLeft += width;
         }
