@@ -553,7 +553,6 @@ button {
 .rail {
   --rail-gap: clamp(10px, 1.2vw, 14px);
   position: relative;
-  margin-left: var(--edge);
   overflow-x: auto;
   overflow-y: hidden;
   padding-block: 4px 8px;
@@ -850,12 +849,18 @@ button {
 }
 
 .cards {
+  --stack-x: clamp(16px, 2.1vw, 34px);
+  --stack-y: clamp(7px, 0.8vw, 13px);
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
+  place-items: center;
+  min-height: clamp(600px, 56vw, 800px);
+  padding-block: 20px;
 }
 
 .card {
+  grid-area: 1 / 1;
+  width: min(470px, 100%);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -865,6 +870,14 @@ button {
   border: 1px solid var(--line);
   box-shadow: var(--shadow-card);
   transform-origin: 50% 60%;
+  z-index: var(--z, 1);
+  /* pre-stacked: cards start fanned behind one another, then drag apart */
+  transform: translate3d(
+      calc(var(--t, 0) * var(--stack-x)),
+      calc(var(--t, 0) * var(--stack-y) * -1),
+      0
+    )
+    rotate(calc(var(--t, 0) * 1.5deg));
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -889,9 +902,14 @@ button {
 
 .card.is-dragging {
   cursor: grabbing;
-  z-index: 5;
+  z-index: 30 !important;
   border-color: #d9d9d4;
   box-shadow: 0 2px 4px rgba(16, 16, 16, 0.06), 0 36px 80px -34px rgba(16, 16, 16, 0.5);
+}
+
+/* tabbing to a card tucked in the deck brings it to the front */
+.card:focus-within {
+  z-index: 25;
 }
 
 .card.is-dragging:hover {
@@ -1086,53 +1104,83 @@ button {
 
 /* featured wide project (METER) */
 .feature {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  min-height: 420px;
   border-radius: var(--radius-lg);
   background: #101010;
   color: #f5f5f2;
-  padding: clamp(1.25rem, 2.6vw, 1.9rem) clamp(1.35rem, 2.8vw, 2.2rem);
+  overflow: hidden;
   margin-bottom: clamp(1.5rem, 3vw, 2rem);
-  box-shadow: 0 24px 50px -34px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.6);
+}
+
+.feature__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  padding: clamp(1.6rem, 3vw, 2.9rem);
+}
+
+.feature__kicker {
+  font-size: 12.5px;
+  letter-spacing: 0;
+  color: #8d8d87;
 }
 
 .feature__wordmark {
-  font-size: clamp(1.7rem, 0.8rem + 2.6vw, 2.6rem);
-  line-height: 1;
-  letter-spacing: -0.045em;
+  margin-top: 0.55rem;
+  font-size: clamp(2.7rem, 1rem + 5.2vw, 5.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
   font-weight: 600;
 }
 
 .feature__text {
-  font-size: 13px;
+  margin-top: 1.15rem;
+  font-size: 14.5px;
   line-height: 1.55;
   color: #b9b9b4;
-  max-width: 40ch;
+  max-width: 34ch;
 }
 
 .feature__link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
+  gap: 7px;
+  margin-top: 1.6rem;
+  padding: 9px 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 13px;
   color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  padding-bottom: 2px;
-  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.feature__link:hover {
-  border-color: #fff;
+.feature:hover .feature__link {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.42);
 }
 
-.feature__aside {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+.feature__media {
+  position: relative;
+  min-height: 100%;
+  background: #171717;
+}
+
+.feature__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .feature:hover .feature__media img {
+    transform: scale(1.03);
+  }
 }
 
 /* ---------- photo strip / gallery --------------------------------------- */
@@ -1625,6 +1673,15 @@ button {
   .gallery {
     columns: 2;
   }
+
+  .feature {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .feature__media {
+    aspect-ratio: 16 / 10;
+  }
 }
 
 @media (max-width: 780px) {
@@ -1701,6 +1758,20 @@ button {
 @media (pointer: coarse) {
   .work__hint {
     display: none;
+  }
+
+  /* no pointer means no dragging, so the deck must not hide projects */
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    min-height: 0;
+    padding-block: 0;
+  }
+
+  .card {
+    grid-area: auto;
+    width: auto;
+    transform: none;
   }
 }
 

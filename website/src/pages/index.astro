@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { Image } from 'astro:assets';
+import emerge from '../assets/work/emerge.jpg';
 import { featured, projects, site } from '../data/site';
 import { photos } from '../data/photos';
 
@@ -170,13 +171,26 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
     </div>
 
     <a class="feature" href="/meter/">
-      <span class="feature__wordmark">METER</span>
-      <span class="feature__aside">
+      <span class="feature__copy">
+        <span class="feature__kicker">Co-founded 2024 — grant-funded, piloting</span>
+        <span class="feature__wordmark">METER</span>
         <span class="feature__text">
-          Ultra-wideband navigation for blind and low-vision people. Co-founded 2024; I build the
-          product and the software.
+          Ultra-wideband navigation for blind and low-vision people. I build the product and the
+          software.
         </span>
         <span class="feature__link">Case study →</span>
+      </span>
+      <span class="feature__media">
+        <Image
+          src={emerge}
+          alt="Shalev at the Emerge start-up showcase in Sheffield."
+          widths={[520, 780, 1100]}
+          sizes="(max-width: 900px) 92vw, 44vw"
+          format="webp"
+          quality={78}
+          loading="lazy"
+          decoding="async"
+        />
       </span>
     </a>
 
@@ -186,7 +200,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
           <article
             class="card"
             data-drag
-            style={`--i:${index};--ambient:${info.ambient}`}
+            style={`--i:${index};--t:${index - (cards.length - 1) / 2};--z:${cards.length - index};--ambient:${info.ambient}`}
           >
             <a
               class="card__media"
@@ -355,6 +369,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
       from: Point,
       to: Point,
       velocity: Point,
+      rot = 0,
       onDone?: () => void,
     ) => {
       let x = from.x;
@@ -376,7 +391,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         x += vx * dt;
         y += vy * dt;
 
-        card.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+        card.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${rot}deg)`;
 
         const settled =
           Math.abs(x - to.x) < 0.35 &&
@@ -385,7 +400,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
           Math.abs(vy) < 8;
 
         if (settled) {
-          card.style.transform = `translate3d(${to.x.toFixed(2)}px, ${to.y.toFixed(2)}px, 0)`;
+          card.style.transform = `translate3d(${to.x.toFixed(2)}px, ${to.y.toFixed(2)}px, 0) rotate(${rot}deg)`;
           onDone?.();
           return;
         }
@@ -398,13 +413,25 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
     };
 
     cards.forEach((card) => {
-      let pos: Point = { x: 0, y: 0 };
-      let current: Point = { x: 0, y: 0 };
+      // Start from wherever CSS pre-stacked this card.
+      const home: Point = { x: 0, y: 0 };
+      let baseRot = 0;
+
+      const computed = getComputedStyle(card).transform;
+      if (computed && computed !== 'none') {
+        const matrix = new DOMMatrixReadOnly(computed);
+        home.x = matrix.e;
+        home.y = matrix.f;
+        baseRot = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+      }
+
+      let pos: Point = { x: home.x, y: home.y };
+      let current: Point = { x: home.x, y: home.y };
       let cancelSpring: (() => void) | null = null;
       let dragging = false;
       let moved = false;
       let start: Point = { x: 0, y: 0 };
-      let origin: Point = { x: 0, y: 0 };
+      let origin: Point = { x: home.x, y: home.y };
       let last = { x: 0, y: 0, t: 0 };
       let velocity: Point = { x: 0, y: 0 };
       let limits = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
@@ -467,7 +494,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         };
 
         const tilt = clamp(velocity.x * 0.004, -3.5, 3.5);
-        card.style.transform = `translate3d(${current.x.toFixed(2)}px, ${current.y.toFixed(2)}px, 0) rotate(${tilt.toFixed(2)}deg) scale(1.015)`;
+        card.style.transform = `translate3d(${current.x.toFixed(2)}px, ${current.y.toFixed(2)}px, 0) rotate(${(baseRot + tilt).toFixed(2)}deg) scale(1.015)`;
       });
 
       const release = (event: PointerEvent) => {
@@ -483,7 +510,7 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         };
 
         pos = target;
-        cancelSpring = spring(card, current, target, velocity);
+        cancelSpring = spring(card, current, target, velocity, baseRot);
         if (moved) markUsed();
       };
 
@@ -505,9 +532,9 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         cancelSpring?.();
         cancelSpring = null;
         const from = { ...pos };
-        pos = { x: 0, y: 0 };
+        pos = { x: home.x, y: home.y };
         card.style.zIndex = '';
-        cancelSpring = spring(card, from, { x: 0, y: 0 }, { x: 0, y: 0 });
+        cancelSpring = spring(card, from, home, { x: 0, y: 0 }, baseRot);
       });
     });
 
