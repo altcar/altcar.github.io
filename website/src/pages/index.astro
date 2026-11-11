@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Strip from '../components/Strip.astro';
 import { Image } from 'astro:assets';
 import { featured, projects, site } from '../data/site';
 import { photos } from '../data/photos';
@@ -52,7 +51,7 @@ const meta: Record<string, CardMeta> = {
 };
 
 const glyphs: Record<CardMeta['glyph'], string> = {
-  ship: 'M12 3c2.5 2 4 5 4 8l2 3-4-1-2 4-2-4-4 1 2-3c0-3 1.5-6 4-8Z',
+  ship: 'M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z M4 7.5l8 4.5 8-4.5 M12 12v9',
   flask: 'M9 3h6M10 3v5.5L5.5 17a2 2 0 0 0 1.7 3h9.6a2 2 0 0 0 1.7-3L14 8.5V3',
   briefcase: 'M3.5 8h17v11h-17zM9 8V5h6v3',
   bolt: 'M13 2 4.5 14H10l-1 8 8.5-12H12l1-8Z',
@@ -75,24 +74,28 @@ const cards = featured.map((project) => {
   };
 });
 
-const withImages = projects.filter((project) => project.image);
-const stripProjects = withImages.slice(0, 7).map((project) => ({
-  src: project.image!,
-  alt: project.alt ?? project.title,
-}));
-const stripPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt }));
-const teaser = photos.slice(1, 5);
+const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, place: photo.place, note: photo.note }));
 ---
 
 <Base title={site.title} description={site.description}>
   <section class="hero wrap">
-    <p class="hero__eyebrow">Bristol, UK</p>
     <h1 class="hero__title">
-      I build robots, then the software that makes them <span class="serif">useful.</span>
+      <span>
+        <span class="soft">Shalev studies</span> Robotics <span class="soft">@</span>
+        <span class="mark mark--bristol" aria-hidden="true"><span>B</span></span> Bristol
+      </span>
+      <span>
+        <span class="soft">Currently co-founder</span> <span class="soft">@</span>
+        <span class="mark mark--meter" aria-hidden="true"><span>M</span></span> METER
+      </span>
+      <span>
+        <span class="soft">Previously built</span>
+        <span class="mark mark--vape" aria-hidden="true"><span>V</span></span> VapeDrop
+      </span>
     </h1>
-    <p class="hero__note">
-      Research at the Bristol Robotics Laboratory. Co-founder at METER. The rest is off the CV.
-    </p>
+
+    <p class="hero__note">Research at the Bristol Robotics Laboratory. The rest is off the CV.</p>
+
     <div class="hero__actions">
       <a class="btn btn--dark" href="#work">
         See the work
@@ -101,6 +104,32 @@ const teaser = photos.slice(1, 5);
         </svg>
       </a>
       <a class="btn" href="mailto:connecti@shalev.eu.org">Say hello</a>
+    </div>
+  </section>
+
+  <section class="photo-rail">
+    <div class="photo-rail__head">
+      <h2>Field notes</h2>
+      <a href="/meow/">Open the gallery →</a>
+    </div>
+
+    <div class="rail" data-rail tabindex="0" role="region" aria-label="Photographs — scroll sideways">
+      {
+        railPhotos.map((photo) => (
+          <a class="rail__item" href="/meow/" aria-label={`${photo.place}, ${photo.note}`}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={[420, 700, 1000]}
+              sizes="(max-width: 720px) 72vw, 34vw"
+              format="webp"
+              quality={76}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        ))
+      }
     </div>
   </section>
 
@@ -142,7 +171,7 @@ const teaser = photos.slice(1, 5);
           <article
             class="card"
             data-drag
-            style={`--i:${index};--badge:${info.tone.bg};--badge-ink:${info.tone.ink};--ambient:${info.ambient}`}
+            style={`--i:${index};--ambient:${info.ambient}`}
           >
             <a
               class="card__media"
@@ -196,38 +225,81 @@ const teaser = photos.slice(1, 5);
       }
     </div>
   </section>
-
-  <div class="strips">
-    <Strip items={stripProjects} speed="70s" />
-    <Strip items={stripPhotos} reverse speed="85s" />
-  </div>
-
-  <section class="section wrap">
-    <div class="section-head">
-      <h2>Field notes</h2>
-      <a href="/meow/">Open gallery →</a>
-    </div>
-    <div class="teaser">
-      {
-        teaser.map((photo) => (
-          <a href="/meow/" aria-label={`${photo.place}, ${photo.note}`}>
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              width={600}
-              format="webp"
-              quality={72}
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        ))
-      }
-    </div>
-  </section>
 </Base>
 
 <script>
+  /* ---------- sideways photo rail ---------------------------------------- */
+  const rail = document.querySelector<HTMLElement>('[data-rail]');
+
+  if (rail) {
+    const syncScrollable = () => {
+      rail.classList.toggle('is-scrollable', rail.scrollWidth > rail.clientWidth + 2);
+    };
+    syncScrollable();
+    addEventListener('resize', syncScrollable);
+
+    let down = false;
+    let dragged = false;
+    let startX = 0;
+    let startLeft = 0;
+
+    rail.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || event.pointerType === 'touch') return;
+      down = true;
+      dragged = false;
+      startX = event.clientX;
+      startLeft = rail.scrollLeft;
+      rail.classList.add('is-dragging');
+      rail.setPointerCapture(event.pointerId);
+    });
+
+    // Links are natively draggable, which kills pointermove mid-gesture.
+    rail.addEventListener('dragstart', (event) => event.preventDefault());
+
+    rail.addEventListener('pointermove', (event) => {
+      if (!down) return;
+      const dx = event.clientX - startX;
+      if (!dragged && Math.abs(dx) > 4) dragged = true;
+      rail.scrollLeft = startLeft - dx;
+    });
+
+    const endDrag = (event: PointerEvent) => {
+      if (!down) return;
+      down = false;
+      rail.classList.remove('is-dragging');
+      if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
+    };
+
+    rail.addEventListener('pointerup', endDrag);
+    rail.addEventListener('pointercancel', endDrag);
+
+    rail.addEventListener(
+      'click',
+      (event) => {
+        if (!dragged) return;
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      true,
+    );
+
+    // A vertical wheel moves the rail sideways, but never traps the page at either end.
+    rail.addEventListener(
+      'wheel',
+      (event) => {
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+        if (rail.scrollWidth <= rail.clientWidth) return;
+        const atStart = rail.scrollLeft <= 0 && event.deltaY < 0;
+        const atEnd = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1 && event.deltaY > 0;
+        if (atStart || atEnd) return;
+        event.preventDefault();
+        rail.scrollLeft += event.deltaY;
+      },
+      { passive: false },
+    );
+  }
+
+  /* ---------- draggable project cards ------------------------------------ */
   const canvas = document.querySelector<HTMLElement>('[data-drag-canvas]');
   const hint = document.querySelector<HTMLElement>('[data-drag-hint]');
   const tidy = document.querySelector<HTMLButtonElement>('[data-tidy]');
