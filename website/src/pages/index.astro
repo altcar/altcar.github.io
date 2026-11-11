@@ -114,22 +114,37 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
     </div>
 
     <div class="rail" data-rail tabindex="0" role="region" aria-label="Photographs — scroll sideways">
-      {
-        railPhotos.map((photo) => (
-          <a class="rail__item" href="/meow/" aria-label={`${photo.place}, ${photo.note}`}>
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              widths={[420, 700, 1000]}
-              sizes="(max-width: 720px) 72vw, 34vw"
-              format="webp"
-              quality={76}
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        ))
-      }
+      <div class="rail__track">
+        {
+          [railPhotos, [...railPhotos.slice(3), ...railPhotos.slice(0, 3)]].map((row) => (
+            <div class="rail__row">
+              {[0, 1].map((copy) => (
+                <div class="rail__group" aria-hidden={copy === 1 ? 'true' : undefined}>
+                  {row.map((photo) => (
+                    <a
+                      class="rail__item"
+                      href="/meow/"
+                      aria-label={copy === 0 ? `${photo.place}, ${photo.note}` : undefined}
+                      tabindex={copy === 1 ? -1 : undefined}
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={copy === 0 ? photo.alt : ''}
+                        widths={[380, 640]}
+                        sizes="(max-width: 720px) 52vw, 23vw"
+                        format="webp"
+                        quality={74}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -232,11 +247,18 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
   const rail = document.querySelector<HTMLElement>('[data-rail]');
 
   if (rail) {
-    const syncScrollable = () => {
-      rail.classList.toggle('is-scrollable', rail.scrollWidth > rail.clientWidth + 2);
+    // Half the track is one full set — the second copy exists purely to make the loop seamless.
+    const setWidth = () => rail.scrollWidth / 2;
+
+    const wrap = () => {
+      const width = setWidth();
+      if (width < 1) return;
+      if (rail.scrollLeft >= width) rail.scrollLeft -= width;
+      else if (rail.scrollLeft < 0) rail.scrollLeft += width;
     };
-    syncScrollable();
-    addEventListener('resize', syncScrollable);
+
+    rail.addEventListener('scroll', wrap, { passive: true });
+    addEventListener('resize', wrap);
 
     let down = false;
     let dragged = false;
@@ -261,6 +283,18 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
       const dx = event.clientX - startX;
       if (!dragged && Math.abs(dx) > 4) dragged = true;
       rail.scrollLeft = startLeft - dx;
+
+      // Keep the drag continuous across the seam by shifting the anchor too.
+      const width = setWidth();
+      if (width > 0) {
+        if (rail.scrollLeft >= width) {
+          rail.scrollLeft -= width;
+          startLeft -= width;
+        } else if (rail.scrollLeft < 0) {
+          rail.scrollLeft += width;
+          startLeft += width;
+        }
+      }
     });
 
     const endDrag = (event: PointerEvent) => {
@@ -281,21 +315,6 @@ const railPhotos = photos.map((photo) => ({ src: photo.src, alt: photo.alt, plac
         event.stopPropagation();
       },
       true,
-    );
-
-    // A vertical wheel moves the rail sideways, but never traps the page at either end.
-    rail.addEventListener(
-      'wheel',
-      (event) => {
-        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-        if (rail.scrollWidth <= rail.clientWidth) return;
-        const atStart = rail.scrollLeft <= 0 && event.deltaY < 0;
-        const atEnd = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1 && event.deltaY > 0;
-        if (atStart || atEnd) return;
-        event.preventDefault();
-        rail.scrollLeft += event.deltaY;
-      },
-      { passive: false },
     );
   }
 

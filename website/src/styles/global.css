@@ -551,14 +551,15 @@ button {
 }
 
 .rail {
-  display: flex;
-  gap: clamp(10px, 1.4vw, 18px);
+  --rail-gap: clamp(10px, 1.2vw, 14px);
+  position: relative;
+  margin-left: var(--edge);
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 4px var(--edge) 8px;
-  scroll-padding-inline: var(--edge);
-  scroll-snap-type: x proximity;
+  padding-block: 4px 8px;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -571,26 +572,39 @@ button {
   outline-offset: 2px;
 }
 
-.rail.is-scrollable {
-  cursor: grab;
-}
-
 .rail.is-dragging {
   cursor: grabbing;
-  scroll-snap-type: none;
-  scroll-behavior: auto;
+}
+
+.rail__track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rail-gap);
+  width: max-content;
+}
+
+.rail__row {
+  display: flex;
+  width: max-content;
+}
+
+/* each group carries its own trailing gap so two copies tile with no seam */
+.rail__group {
+  display: flex;
+  gap: var(--rail-gap);
+  padding-right: var(--rail-gap);
+  width: max-content;
 }
 
 .rail__item {
   position: relative;
   flex: 0 0 auto;
-  width: clamp(280px, 34vw, 500px);
+  width: clamp(230px, 23vw, 360px);
   aspect-ratio: 4 / 3;
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
   background: var(--surface-2);
   border: 1px solid var(--line);
-  scroll-snap-align: start;
 }
 
 .rail__item img {
@@ -1644,7 +1658,7 @@ button {
 
   .tile,
   .rail__item {
-    width: clamp(250px, 72vw, 420px);
+    width: clamp(190px, 52vw, 280px);
   }
 
   .gallery {
